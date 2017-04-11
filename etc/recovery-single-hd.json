@@ -1,0 +1,114 @@
+{
+  "accountInfo": {
+    "cosigners": [],
+    "pubId": "CMSXDQBMLvniHm47d6KSkKyHeqLCC",
+    "serverMandatory": false,
+    "meta": {
+      "name": "Single Senza Server"
+    },
+    "minSignatures": 1,
+    "cd": 1489482316100,
+    "pubMeta": {
+      "name": "Single Senza Server"
+    },
+    "serverSignature": false,
+    "extAddrs": 5,
+    "intAddrs": 0,
+    "serverXpub": "tpubDE2xXbZzek6c5TiogEBXj7A9vQ1bK6wWTHXJbZRXNqeLkn2FPnTeqdD6Pi8nZTgWZNzsy9nidbxRhkgUyvdgjbUH2h1z3Lv5hDvvpZmsmHS",
+    "type": "H"
+  },
+  "recoveryData": {
+    "unspents": [
+      {
+        "n": 0,
+        "amount": 1300000,
+        "blockMature": 1093595,
+        "aa": {
+          "chain": 0,
+          "hdindex": 2,
+          "address": "msoQVzNHddK48AXxRZboq1xX1A1ZZgXPmP",
+          "numTxs": 2,
+          "cd": 1489483956063,
+          "lastRequested": 1489483956063
+        },
+        "tx": "163D6A342CA0A8AC249838DCE63894A282934A445B1D59A5B1537C634D01DBEA",
+        "optInRbf": true
+      },
+      {
+        "n": 0,
+        "amount": 1102000,
+        "blockMature": 1093638,
+        "aa": {
+          "chain": 0,
+          "hdindex": 4,
+          "address": "mu5YB6gjF1dGVMaRVBEaMUZ1DAptx2uY7F",
+          "numTxs": 2,
+          "cd": 1489522012111,
+          "lastRequested": 1489522012111
+        },
+        "tx": "77FBAC1AF840E09E73BD5EEE66856B120100777EADAD905C7C649617B4EF5CAD",
+        "optInRbf": true
+      },
+      {
+        "n": 0,
+        "amount": 1200000,
+        "blockMature": 1093594,
+        "aa": {
+          "chain": 0,
+          "hdindex": 1,
+          "address": "mwFnRNG6uiGKEyQFMeaD6X88yFdt8D944D",
+          "numTxs": 2,
+          "cd": 1489482618347,
+          "lastRequested": 1489482618347
+        },
+        "tx": "CF44EB5CE88BE182655B554D470874D3752298CE00081C4EFCA1E8DB2687460E",
+        "optInRbf": true
+      }
+    ],
+    "bigTx": "AQAAAAPq2wFNY3xTsaVZHVtESpOCopQ45tw4mCSsqKAsNGo9FgAAAAAZdqkUhr4KUDq3bbIYD9DR9tsqaCRRRG2IrP////+tXO+0F5ZkfFyQra1+dwABEmuFZu5evXOe4ED4Gqz7dwAAAAAZdqkUlMM6Rk/eHwUUkNWzBveBOSLHbSWIrP////8ORocm2+ih/E4cCADOmCJ103QIR01VW2WC4YvoXOtEzwAAAAAZdqkUrKOH4eOS1WJVb/R9F62Wyoyw6tWIrP////8AAAAAAA==",
+    "bigTxSignatures": [
+      {
+        "pubKey": "AhXAZGS/bb6Lexd5eolymwOlE8zIkn33mL6ocxRC8331",
+        "sig": "MEQCIDb38QfSeAQs9NgbDMYX9zWWdF66ZC/RxJvVijB49tHaAiBYruKUatg9qQFS9nfA53nuWfy2teotbrnOxpyQIBvBjQ=="
+      },
+      {
+        "pubKey": "Ak3wrK7u3FYuJgaG82IMIn27szTvNaTK+gP1b4kl79jV",
+        "sig": "MEQCIDIxXwHTocxb+grahraQUU8g52ynvlTpG7CselAjkPVuAiB2ZPMPgoWN7sFnaosLg7A4F8mt00+TwKrUtGZpuKJGCg=="
+      },
+      {
+        "pubKey": "A/bCR5Rpaxg1Se3ygLedIgurRG7ENsVeFigxtNoNcTDm",
+        "sig": "MEUCIQC/2WirNaFbBHQS3bN652qjWbik0jtuVsPP0MnHnNxVoAIgIByC+5NFC2yJulYWUDgitymtICLSv8vS07Pu1J+FmYw="
+      }
+    ],
+    "singleTxs": [
+      "AQAAAAHq2wFNY3xTsaVZHVtESpOCopQ45tw4mCSsqKAsNGo9FgAAAAAZdqkUhr4KUDq3bbIYD9DR9tsqaCRRRG2IrP////8AAAAAAA==",
+      "AQAAAAGtXO+0F5ZkfFyQra1+dwABEmuFZu5evXOe4ED4Gqz7dwAAAAAZdqkUlMM6Rk/eHwUUkNWzBveBOSLHbSWIrP////8AAAAAAA==",
+      "AQAAAAEORocm2+ih/E4cCADOmCJ103QIR01VW2WC4YvoXOtEzwAAAAAZdqkUrKOH4eOS1WJVb/R9F62Wyoyw6tWIrP////8AAAAAAA=="
+    ],
+    "singleTxsSignatures": [
+      {
+        "pubKey": "AhXAZGS/bb6Lexd5eolymwOlE8zIkn33mL6ocxRC8331",
+        "sig": "MEUCIQC+6xvMk/ro9vQ7RnmNy3VhA1Y9iuaASgzwQw0xuu7C7QIgYpvwYffjpl7eEunjK7jRalc6DJdm3HUHBaizNlOS9KU="
+      },
+      {
+        "pubKey": "Ak3wrK7u3FYuJgaG82IMIn27szTvNaTK+gP1b4kl79jV",
+        "sig": "MEQCIBhGx1zTpNwMfAU3ZGDRyz6/367t0OmCEecjh55QGL/JAiBKmVS6NCrnyn8LwUkyGiIZhZ5CWG3l4PhDnMo3N7BKcA=="
+      },
+      {
+        "pubKey": "A/bCR5Rpaxg1Se3ygLedIgurRG7ENsVeFigxtNoNcTDm",
+        "sig": "MEUCIQCHaW+FmSDeSaJSvHAgLsSXAMQMrrJGNFKorfdM41XDiQIgRifuI/JT8ontTT0GQhfI5WaLZArDVdXD5/ysHdxDIDE="
+      }
+    ]
+  },
+  "balance": {
+    "amAvailable": 3602000,
+    "amReserved": 0,
+    "amUnconfirmed": 0,
+    "amUnmature": 0,
+    "spentInDay": 0,
+    "spentInWeek": 0,
+    "spentInMonth": 0
+  },
+  "ts": 1489593458801,
+  "network": "test"
+}

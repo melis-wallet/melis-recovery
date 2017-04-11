@@ -1,0 +1,141 @@
+{
+  "accountInfo": {
+    "cosigners": [],
+    "meta": {
+      "name": "Single Senza Server"
+    },
+    "minSignatures": 1,
+    "accountNum": 392561225,
+    "pubMeta": {
+      "name": "Single Senza Server"
+    },
+    "pubId": "CMSXDQBMLvniHm47d6KSkKyHeqLCC",
+    "cd": 1489482316100,
+    "serverSignature": false,
+    "extAddrs": 8,
+    "intAddrs": 0,
+    "serverXpub": "tpubDE2xXbZzek6c5TiogEBXj7A9vQ1bK6wWTHXJbZRXNqeLkn2FPnTeqdD6Pi8nZTgWZNzsy9nidbxRhkgUyvdgjbUH2h1z3Lv5hDvvpZmsmHS",
+    "serverMandatory": false,
+    "type": "H"
+  },
+  "recoveryData": {
+    "unspents": [
+      {
+        "n": 0,
+        "amount": 1102000,
+        "blockMature": 1093638,
+        "aa": {
+          "chain": 0,
+          "hdindex": 4,
+          "address": "mu5YB6gjF1dGVMaRVBEaMUZ1DAptx2uY7F",
+          "numTxs": 2,
+          "cd": 1489522012111,
+          "lastRequested": 1489522012111
+        },
+        "tx": "77FBAC1AF840E09E73BD5EEE66856B120100777EADAD905C7C649617B4EF5CAD",
+        "optInRbf": true
+      },
+      {
+        "n": 0,
+        "amount": 1297778,
+        "blockMature": 0,
+        "aa": {
+          "chain": 0,
+          "hdindex": 5,
+          "address": "mmi7eXar2cgXy2sgiN1qW6QAbLayPmWfrW",
+          "numTxs": 1,
+          "meta": {
+            "requested": 1489759664842,
+            "info": "Da Tool di recovery"
+          },
+          "cd": 1489759658854,
+          "lastRequested": 1489759658854
+        },
+        "tx": "794A3A3AAF15EBF6913664F106E2BF5124D7987A34C9A581B951D3042C54A8DD"
+      },
+      {
+        "n": 0,
+        "amount": 2200000,
+        "blockMature": 0,
+        "aa": {
+          "chain": 0,
+          "hdindex": 7,
+          "address": "mgmWzQ7RCWnJpaagx4zkixjUNzX8djW881",
+          "numTxs": 1,
+          "cd": 1490087548789,
+          "lastRequested": 1490087548789
+        },
+        "tx": "9529096F43E2D72EE3790B95F6711AF3D58EEB6E33A1EBB63AF9290C3998EDA6"
+      },
+      {
+        "n": 0,
+        "amount": 1200000,
+        "blockMature": 1093594,
+        "aa": {
+          "chain": 0,
+          "hdindex": 1,
+          "address": "mwFnRNG6uiGKEyQFMeaD6X88yFdt8D944D",
+          "numTxs": 2,
+          "cd": 1489482618347,
+          "lastRequested": 1489482618347
+        },
+        "tx": "CF44EB5CE88BE182655B554D470874D3752298CE00081C4EFCA1E8DB2687460E",
+        "optInRbf": true
+      }
+    ],
+    "bigTx": "AQAAAAStXO+0F5ZkfFyQra1+dwABEmuFZu5evXOe4ED4Gqz7dwAAAAAZdqkUlMM6Rk/eHwUUkNWzBveBOSLHbSWIrP/////dqFQsBNNRuYGlyTR6mNckUb/iBvFkNpH26xWvOjpKeQAAAAAZdqkUQ+0jRTiJGkYzgclnGCLtA/qaZ/aIrP////+m7Zg5DCn5OrbroTNu647V8xpx9pULeeMu1+JDbwkplQAAAAAZdqkUDbk9/rVjpwlx4WDQdLtFaVTs3pSIrP////8ORocm2+ih/E4cCADOmCJ103QIR01VW2WC4YvoXOtEzwAAAAAZdqkUrKOH4eOS1WJVb/R9F62Wyoyw6tWIrP////8AAAAAAA==",
+    "bigTxSignatures": [
+      {
+        "pubKey": "Ak3wrK7u3FYuJgaG82IMIn27szTvNaTK+gP1b4kl79jV",
+        "sig": "MEUCIQCC3NDN6cei4WuQEmEyp+Sh5uLTRX3QFf1zclVDoraE/wIgXvQRjNK2CR0fi87aXRv94oMCoiaQjH6y02Wy9XrrEQA="
+      },
+      {
+        "pubKey": "AxLjN6f1gMeRF5H4RcXehc5E6Vr1Npg62IB5vECiZnt/",
+        "sig": "MEQCIAHqHH7zt9soCNrEoyuHSnBVYj4wwsDZUlq4Jt/tlDAIAiBavnL1DJye4Ak5pauB9YihkyDntscDO+lVEFb+VpZ7yQ=="
+      },
+      {
+        "pubKey": "AjMCV/rnSUm9NNWcEl+9mWi4zTAhPPIm1SvQJ/tqPsSJ",
+        "sig": "MEUCIQDoFwYFZLQWHiEYkyPH70/9UvDRAUGD+H2CW4YIRC5/uQIgArxPxbJP3knRXQN4YOa2CQSnq4E0fUbBiofZpgzj0PU="
+      },
+      {
+        "pubKey": "A/bCR5Rpaxg1Se3ygLedIgurRG7ENsVeFigxtNoNcTDm",
+        "sig": "MEUCIQDHlifvaDzQdTmg6Y2SphQWT6KKmK/KPpnWDfoiEgz9QgIgFZJ1vARUtaP4zq0TRKCHMzlFBG62Y1h/hgMtQp9a6TA="
+      }
+    ],
+    "singleTxs": [
+      "AQAAAAGtXO+0F5ZkfFyQra1+dwABEmuFZu5evXOe4ED4Gqz7dwAAAAAZdqkUlMM6Rk/eHwUUkNWzBveBOSLHbSWIrP////8AAAAAAA==",
+      "AQAAAAHdqFQsBNNRuYGlyTR6mNckUb/iBvFkNpH26xWvOjpKeQAAAAAZdqkUQ+0jRTiJGkYzgclnGCLtA/qaZ/aIrP////8AAAAAAA==",
+      "AQAAAAGm7Zg5DCn5OrbroTNu647V8xpx9pULeeMu1+JDbwkplQAAAAAZdqkUDbk9/rVjpwlx4WDQdLtFaVTs3pSIrP////8AAAAAAA==",
+      "AQAAAAEORocm2+ih/E4cCADOmCJ103QIR01VW2WC4YvoXOtEzwAAAAAZdqkUrKOH4eOS1WJVb/R9F62Wyoyw6tWIrP////8AAAAAAA=="
+    ],
+    "singleTxsSignatures": [
+      {
+        "pubKey": "Ak3wrK7u3FYuJgaG82IMIn27szTvNaTK+gP1b4kl79jV",
+        "sig": "MEQCIBhGx1zTpNwMfAU3ZGDRyz6/367t0OmCEecjh55QGL/JAiBKmVS6NCrnyn8LwUkyGiIZhZ5CWG3l4PhDnMo3N7BKcA=="
+      },
+      {
+        "pubKey": "AxLjN6f1gMeRF5H4RcXehc5E6Vr1Npg62IB5vECiZnt/",
+        "sig": "MEQCIEKvg0t5ZGAChuUmA14pzXKKzoTni8k6t8RWSA2B4+YSAiBEDNwOS00w//pFMDEVcffSEWL8QJ1m6PFPsuJL2cG6Vg=="
+      },
+      {
+        "pubKey": "AjMCV/rnSUm9NNWcEl+9mWi4zTAhPPIm1SvQJ/tqPsSJ",
+        "sig": "MEQCIDMBhC7DrDYo2f9PkrYIJGOXOcxJWeagI5mQSNtbTzW6AiA7x8K0i/qbucl+Um2Lpp6h//aRVbs+ATJQhSDZ9DsrMg=="
+      },
+      {
+        "pubKey": "A/bCR5Rpaxg1Se3ygLedIgurRG7ENsVeFigxtNoNcTDm",
+        "sig": "MEUCIQCHaW+FmSDeSaJSvHAgLsSXAMQMrrJGNFKorfdM41XDiQIgRifuI/JT8ontTT0GQhfI5WaLZArDVdXD5/ysHdxDIDE="
+      }
+    ]
+  },
+  "balance": {
+    "amAvailable": 2302000,
+    "amReserved": 0,
+    "amUnconfirmed": 3497778,
+    "amUnmature": 0,
+    "spentInDay": 0,
+    "spentInWeek": 0,
+    "spentInMonth": 0
+  },
+  "ts": 1490087605939,
+  "network": "test"
+}

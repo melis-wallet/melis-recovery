@@ -1,0 +1,15 @@
+= if (is-equal status undefined)
+  | UNKNOWN
+= else if (eq status 'redeemable')
+  .ui.green.horizontal.label REDEEMABLE
+= else if (eq status 'timelocked')
+  .ui.purple.horizontal.label TIMELOCKED
+= else if (eq status 'spent')
+  .ui.grey.horizontal.label SPENT
+= else if (eq status 'error')
+  .ui.red.horizontal.label API error
+= else if (eq status 'loading')
+  .ui.active.centered.inline.loader
+  /.ui.active.centered.inline.text.loader Querying...
+= else
+  = status

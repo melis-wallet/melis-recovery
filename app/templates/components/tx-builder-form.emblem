@@ -1,0 +1,24 @@
+.ui.form
+  = if oneBig
+    h4.ui.dividing.header Choose destination address
+    | Creating one transaction redeeming all unspents
+  = else
+    h4.ui.dividing.header Choose destination addresses
+    | One transaction per unspent
+
+  table.ui.celled.table
+    thead
+      tr
+        th Input Amount
+        th Fees
+        th Output Amount
+        th Send to address
+    tbody
+      = each txBuilder as |tx|
+        tr
+          td = tx.amount
+          td = tx.fees
+          td {{sub tx.amount tx.fees}}
+          td
+            = input placeholder='bitcoin address' value=tx.address required=true
+

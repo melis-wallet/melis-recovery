@@ -1,0 +1,68 @@
+.ui.ordered.steps
+  .step class="{{if (gt step 0) 'completed'}}" class="{{if (eq step 0) 'active'}}"
+    .content
+      .title Select File
+      .description Show account details
+  .step class="{{if (gt step 1) 'completed'}}" class="{{if (eq step 1) 'active'}}"
+    .content
+      .title Unspents
+      .description Select recoverable unspents
+  .step class="{{if (gt step 2) 'completed'}}" class="{{if (eq step 2) 'active'}}"
+    .content
+      .title Mnemonics
+      .description Input account mnemonics
+  .step class="{{if (gt step 3) 'completed'}}" class="{{if (eq step 3) 'active'}}"
+    .content
+      .title Broadcast
+      .description Sign transaction and broadcast
+br
+
+= if (eq step 0)
+  .ui.form
+    .field
+      label Select the file with the recovery data for your account
+      = input type='file' value=filename id='fileinput'
+  br
+  = if fileError
+    ' Error while loading file:
+    .ui.label = fileError
+    ' Please select a correct recovery file
+
+  = if fileValidated
+    = account-detail recoveryInfo=recoveryInfo
+
+  .ui.right.aligned.segment
+    button.ui.button click='goStep1' class={step1Disabled:disabled} Next Step
+
+= else if (eq step 1)
+
+  /= unspents-selector recoveryInfo=recoveryInfo parent=this oneBigDisabled=(mut oneBigDisabled) singleDisabled=(mut singleDisabled) allSelected=(mut allSelected)
+  = unspents-selector recoveryInfo=recoveryInfo parent=this
+  br
+  button.ui.button click='goStep0' Back to Account Detail
+  button.ui.right.floated.button click="'goTxBuilderForm' true" class={unspentsSelector.oneBigDisabled:disabled} class={unspentsSelector.loading:disabled} Redeem all unspents in one transaction
+  button.ui.right.floated.button click="'goTxBuilderForm' false" class={unspentsSelector.singleDisabled:disabled} class={unspentsSelector.loading:disabled} Redeem with a single tx per unspent
+
+= else if (eq step 2)
+
+  = tx-builder-form parent=this recoveryInfo=recoveryInfo oneBig=oneBig
+  br
+  button.ui.button click='goStep1' Back to Unspents Selection
+  button.ui.right.floated.button click='goStep3' class={txBuilderForm.formInvalid:disabled} Collect Mnemonics
+
+= else if (eq step 3)
+
+  = mnemonics-form parent=this recoveryInfo=recoveryInfo
+  br
+  button.ui.button click='goStep2' Back
+  button.ui.right.floated.button click='goStep4' class={mnemonicsForm.invalidForm:disabled} Sign And Broadcast!
+
+= else if (eq step 4)
+
+  = tx-signer parent=this recoveryInfo=recoveryInfo
+  /br
+  /button.ui.button click='goStep3' Back
+
+= else
+
+  | Unknown page!?

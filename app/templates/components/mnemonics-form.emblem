@@ -1,0 +1,39 @@
+.ui.segment
+  .ui.teal.right.ribbon.label
+    = mnemonics.length
+    '
+    ' mnemonics needed out of
+    = numNeeded
+    '
+    ' cousers of the account
+
+  = each mnemonics as |entry index|
+    .ui.form
+      .fields
+        .eleven.wide.field
+          label
+            ' Account user #
+            = index
+          = input placeholder='mnemonics' value=entry.words required=true disabled=validSeeds
+          = if entry.msg
+            .ui.pointing.label = entry.msg
+          = else if entry.msg2
+            .ui.pointing.label = entry.msg2
+        .field
+          label Passphrase (if encrypted)
+          = input placeholder='passphrase' value=entry.password disabled=validSeeds
+          = if entry.passMsg
+            .ui.pointing.label = entry.passMsg
+        /.field
+          label &nbsp;
+          = input disabled=true value=entry.msg
+
+  .ui.divider
+
+  = if validMnemonics
+    button.ui.button click='validateSeeds' disabled=validSeeds Validate mnemonics
+  = else
+   | Valid mnemonics required to sign transaction
+
+  = if (and validSeeds validMnemonics)
+   | Mnemonics check out, you can sign the transaction!

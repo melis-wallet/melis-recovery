@@ -1,0 +1,78 @@
+//h4.ui.dividing.header
+.ui.segment
+  .ui.brown.right.ribbon.label Blockchain API access
+  ' Api provider:
+  = ui-dropdown class="selection" selected="Bob" onChange=(action (mut apiProviderName))
+    .default.text default
+    i.dropdown.icon
+    .menu
+      = each apiProviders as |api|
+        .item data-value=api.code = api.name
+
+  '
+  .ui.labeled.button click="updateBlockchainHeight"
+    .ui.basic.yellow.button Blockchain Height:
+    a.ui.black.left.pointing.label = blockChainHeight
+
+  .ui.divider
+
+  ' Fees (satoshis per byte):
+  = input value=recoveryInfo.satoshisPerByte size=10
+  ' &nbsp;
+  button.ui.button click='updateNetworkFees' Get fees from network
+  ' &nbsp;
+  ' (last api used:
+  = recoveryInfo.feeInfo.detail.provider
+  | )
+
+  /br
+  /.ui.labeled.button click="updateBlockchainHeight"
+    .ui.basic.yellow.button Blockchain Height:
+    a.ui.black.left.pointing.label = blockChainHeight
+
+.ui.segment
+  .ui.brown.ribbon.label Unspents
+  table.ui.compact.celled.definition.table
+    thead
+      tr
+        th
+        th Amount
+        th TX/Out - Address
+        th blockExpire
+        th Status
+    tbody
+      = each unspents as |tx|
+        tr
+          td.collapsing
+            .ui.fitted.checkbox
+              = input type='checkbox' checked=tx.selected disabled=allSelected
+              label
+          td = tx.amount
+          td
+            = tx.tx
+            | /
+            = tx.n
+            br
+            tx.aa.address
+          td = tx.blockExpire
+          td
+            = unspent-status status=tx.redeemStatus
+    tfoot.full-width
+      tr
+        th
+          .ui.checkbox
+            = input type='checkbox' checked=allSelected
+            label All
+        th colspan=5
+          .ui.small.button
+            = numSelected
+            '  txs selected for a total of
+            = inputSatoshis
+            '  satoshis
+          .ui.primary.button click='analyze' class={analyzeDisabled:disabled} class={loading:disabled}
+            | ANALYZE
+
+          /.ui.right.floated.small.primary.button click='signAndBroadcast' class={singleTxDisabled:disabled}
+            | Single Txs
+          /.ui.right.floated.small.primary.button click='signAndBroadcast' class="{{if oneBigTxDisabled 'disabled'}}"
+            | One big Tx

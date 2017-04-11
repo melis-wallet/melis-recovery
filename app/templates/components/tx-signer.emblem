@@ -1,0 +1,32 @@
+.ui.segment
+  .ui.labeled.button
+    .ui.basic.yellow.button Network
+    a.ui.yellow.left.pointing.label = recoveryInfo.network
+  br
+  = if signedTxs
+    .ui.divider
+    | Signed TX results
+    = each signedTxs as |obj index|
+      .ui.segment
+        .ui.form
+          .three.fields
+            .field
+              label To
+              input value=obj.to disabled=true
+            .field
+              label Amount
+              = input value=obj.amount disabled=true
+            .field
+              label Fees
+              = input value=obj.fees disabled=true
+          .field
+            label Raw Hex Transaction -- You can push it by yourself with ' bitcoin-cli sendrawtransaction "hexstring" '
+            = textarea value=obj.tx disabled=true
+          ' Broadcast via:
+          = each pushProviders as |provider|
+            .ui.labeled.button click="'pushTx' obj provider.code" class="{{if (get (get obj provider.code) 'res') 'disabled'}}"
+              .ui.basic.button = provider.name
+              a.ui.left.pointing.label = get (get obj provider.code) 'res'
+  = else
+    .ui.form class={loading:loading}
+      .ui.button click='prepareSingleTxRecovery' Press to sign

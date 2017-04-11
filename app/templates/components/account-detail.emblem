@@ -1,0 +1,72 @@
+.ui.segment
+  .ui.red.right.ribbon.label Account Details
+
+  .ui.form
+    .two.fields
+      .field
+        label Name
+        input value=recoveryInfo.accountInfo.meta.name type=text disabled=true
+      .field
+        label Created
+        = input value=(moment-from-now recoveryInfo.accountInfo.cd) disabled=true
+
+    .six.fields
+      .field
+        .ui.labeled.button
+          .ui.basic.yellow.button Network
+          a.ui.yellow.left.pointing.label = recoveryInfo.network
+      .field
+        .ui.labeled.button
+          .ui.basic.rose.button Type
+          a.ui.rose.left.pointing.label = recoveryInfo.accountInfo.type
+      .field
+        .ui.labeled.button
+          .ui.basic.brown.button Num
+          a.ui.brown.left.pointing.label = recoveryInfo.accountInfo.accountNum
+      .field
+        .ui.labeled.button
+          .ui.basic.blue.button Number of cosigners:
+          a.ui.blue.left.pointing.label = recoveryInfo.accountInfo.cosigners.length
+      .field
+        .ui.labeled.button
+          .ui.basic.green.button Required signatures:
+          a.ui.green.left.pointing.label = recoveryInfo.accountInfo.minSignatures
+      .field
+        .ui.labeled.button
+          = if recoveryInfo.accountInfo.serverMandatory
+            .ui.basic.red.button Timelocked txs:
+            a.ui.red.left.pointing.label YES
+          = else
+            .ui.basic.teal.button Timelocked txs:
+            a.ui.teal.left.pointing.label NO
+
+    h4.ui.dividing.header Balance
+    .three.fields
+      .field
+        label Confirmed
+        .ui.tag.label = recoveryInfo.balance.amAvailable
+      .field
+        label Unconfirmed
+        .ui.tag.label = recoveryInfo.balance.amUnconfirmed
+      .field
+        label Unmature
+        .ui.tag.label = recoveryInfo.balance.amUnmature
+
+    if recoveryInfo.accountInfo.cosigners
+      h4.ui.dividing.header Account owners
+      table.ui.celled.table
+        thead
+          tr
+            th pubId
+            th Name
+            th Is Mandatory?
+            th Is Master?
+            th accountNum
+        tbody
+          = each recoveryInfo.accountInfo.cosigners as |user|
+            tr
+              td = user.pubId
+              td = user.name
+              td = user.mandatory
+              td = user.isMaster
+              td = user.accountNum

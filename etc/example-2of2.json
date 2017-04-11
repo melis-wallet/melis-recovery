@@ -1,0 +1,148 @@
+{
+  "accountInfo": {
+    "cosigners": [
+      {
+        "mandatory": true,
+        "name": "CM3bAcRGL71FAPtv8ToHgLZStbZgdX",
+        "pubId": "CM3bAcRGL71FAPtv8ToHgLZStbZgdX",
+        "activationDate": 1483971177507,
+        "isMaster": true,
+        "accountNum": 1480758097,
+        "xpub": "tpubDDM6jxD1xeXgiEzgnD8hdzmor3HdTu6mVsWNNQmFucLqnSVtMFTQuCsJt79oazJ8oz4vK9GvpvEUkkhU7J1AzSN1iWxtj2ddWNiZD6viqws"
+      }
+    ],
+    "minSignatures": 1,
+    "serverMandatory": true,
+    "scriptParams": {
+      "minOtherSignatures": 0,
+      "mandatoryKeys": [
+        "tpubDE2xXba4sqBzpo9BrypvJw27nzCHaee8CLbtMdkVoDBdzE22hkVDf9TDd7kFWPCSCPDNqj1NtvBDEZY6dnA7u1JZa2LAUopCNGq9R7p4xqd",
+        "tpubDDM6jxD1xeXgiEzgnD8hdzmor3HdTu6mVsWNNQmFucLqnSVtMFTQuCsJt79oazJ8oz4vK9GvpvEUkkhU7J1AzSN1iWxtj2ddWNiZD6viqws"
+      ]
+    },
+    "serverXpub": "tpubDE2xXba4sqBzpo9BrypvJw27nzCHaee8CLbtMdkVoDBdzE22hkVDf9TDd7kFWPCSCPDNqj1NtvBDEZY6dnA7u1JZa2LAUopCNGq9R7p4xqd",
+    "serverSignature": true
+  },
+  "recoveryData": {
+    "unspents": [
+      {
+        "n": 0,
+        "amount": 101562500,
+        "blockMature": 1064092,
+        "blockExpire": 1106572,
+        "aa": {
+          "redeemScript": "5221026F9FEA2D9D63173CD27B0DC646684D005C82BF5CC452A39A6198442E330705C321033FBF19B8BA938BE83F01DB96541628C73C24ECE4FEC9C333182F7FDE3CCD2AAC52AE",
+          "chain": 0,
+          "hdindex": 0,
+          "address": "2N3GDdR6Y1RJhvenHDfcwjnoAB18tibqdKp",
+          "numTxs": 4,
+          "cd": 1483971179321,
+          "lastRequested": 1483971179321
+        },
+        "tx": "11515BC706677A5C4974A3F67DA45B8BBAF6A49ECF0BFFFA3BBF6A61B59A5664"
+      },
+      {
+        "n": 1,
+        "amount": 2300000,
+        "blockMature": 1093520,
+        "blockExpire": 1106572,
+        "aa": {
+          "redeemScript": "522102173D3651D9E085838FA7B994674ECCA999DD08C28CD633C1B47AB14E2934C89721021A628A2986A976998CCFBEAD719ACE9B68BBBFAE6EAD24ACF94ABD1086098B0752AE",
+          "chain": 0,
+          "hdindex": 7,
+          "address": "2NB6YCDfpbnMEERhHgsMpM3QoKgWh4q9uLy",
+          "numTxs": 2,
+          "cd": 1489400428302,
+          "lastRequested": 1489400428302
+        },
+        "tx": "2593F8DC38F4EE23D03C98912A947FB70AC9EE4222E5E416F197E77CB7722314"
+      },
+      {
+        "n": 0,
+        "amount": 203125000,
+        "blockMature": 1064092,
+        "blockExpire": 1106572,
+        "aa": {
+          "redeemScript": "5221026F9FEA2D9D63173CD27B0DC646684D005C82BF5CC452A39A6198442E330705C321033FBF19B8BA938BE83F01DB96541628C73C24ECE4FEC9C333182F7FDE3CCD2AAC52AE",
+          "chain": 0,
+          "hdindex": 0,
+          "address": "2N3GDdR6Y1RJhvenHDfcwjnoAB18tibqdKp",
+          "numTxs": 4,
+          "cd": 1483971179321,
+          "lastRequested": 1483971179321
+        },
+        "tx": "958062F43654AEAC1847D79F992BD863EF99804E9B851FDEFCE4FD5E54BD04FB"
+      },
+      {
+        "n": 1,
+        "amount": 4100000,
+        "blockMature": 1093594,
+        "blockExpire": 1106572,
+        "aa": {
+          "redeemScript": "5221023F805740037E59501D2921D4C9E1A9C9823A753900FFCDB8E03AEC800D52502E21037230771CE11AD043B6ABF3C467F3119161106E71E95EC41A906E6CC09D0985EB52AE",
+          "chain": 0,
+          "hdindex": 8,
+          "address": "2NB8mhQYeMoFTJW957Gc5YDtEHyN8BpggDL",
+          "numTxs": 2,
+          "cd": 1489482689052,
+          "lastRequested": 1489482689052
+        },
+        "tx": "EBF1243DBB4A8129E3C44A67739F2E966EE26D4ECF14F0F8534A99FE573936EF"
+      }
+    ],
+    "bigTx": "AQAAAARkVpq1YWq/O/r/C8+epPa6i1ukffajdElcemcGx1tREQAAAABHUiECb5/qLZ1jFzzSew3GRmhNAFyCv1zEUqOaYZhELjMHBcMhAz+/Gbi6k4voPwHbllQWKMc8JOzk/snDMxgvf948zSqsUq4BAAAAFCNyt3znl/EW5OUiQu7JCrd/lCqRmDzQI+70ONz4kyUBAAAAR1IhAhc9NlHZ4IWDj6e5lGdOzKmZ3QjCjNYzwbR6sU4pNMiXIQIaYoophql2mYzPvq1xms6baLu/rm6tJKz5Sr0QhgmLB1KuAQAAAPsEvVRe/eT83h+Fm06Ame9j2CuZn9dHGKyuVDb0YoCVAAAAAEdSIQJvn+otnWMXPNJ7DcZGaE0AXIK/XMRSo5phmEQuMwcFwyEDP78ZuLqTi+g/AduWVBYoxzwk7OT+ycMzGC9/3jzNKqxSrgEAAADvNjlX/plKU/jwFM9ObeJuli6fc2dKxOMpgUq7PSTx6wEAAABHUiECP4BXQAN+WVAdKSHUyeGpyYI6dTkA/8244DrsgA1SUC4hA3IwdxzhGtBDtqvzxGfzEZFhEG5x6V7EGpBubMCdCYXrUq4BAAAAAIziEAA=",
+    "bigTxSignatures": [
+      {
+        "pubKey": "Am+f6i2dYxc80nsNxkZoTQBcgr9cxFKjmmGYRC4zBwXD",
+        "sig": "MEQCICGKP2RramgvByYN8O5AIwNFQOIkZZvtdZHgZLEzSqiyAiAgiIs26dek95uAzv1vFMG0MKs97NoSFcNQ3MYT6vKBqw=="
+      },
+      {
+        "pubKey": "AhpiiimGqXaZjM++rXGazptou7+ubq0krPlKvRCGCYsH",
+        "sig": "MEQCIDjMEk5WlDcCrpLrir8HIBZPihNsl5Z3kTGYYDcwOJhWAiASHPp2NgYv6vW3Kwk5hmQNPxYbcM4B2ut7L6FqGpnBvA=="
+      },
+      {
+        "pubKey": "Am+f6i2dYxc80nsNxkZoTQBcgr9cxFKjmmGYRC4zBwXD",
+        "sig": "MEQCIA3njDElhsjHtMsGtwm4F76gbJq5l4dREmy2HiQs0jdEAiBenYnJ61QS1MRWwTrjn6QThf99CSM3GSx1l9pLHhTk+g=="
+      },
+      {
+        "pubKey": "Aj+AV0ADfllQHSkh1MnhqcmCOnU5AP/NuOA67IANUlAu",
+        "sig": "MEUCIQCPpyv8Fbd7OMKcnEFweV7QF0C+gGBlGXUTKnCe/8TCKwIgL8xyPvlAz0mx02JNIUjGzmn0tZ5rR2zl0vR2YGiHBTc="
+      }
+    ],
+    "singleTxs": [
+      "AQAAAAFkVpq1YWq/O/r/C8+epPa6i1ukffajdElcemcGx1tREQAAAABHUiECb5/qLZ1jFzzSew3GRmhNAFyCv1zEUqOaYZhELjMHBcMhAz+/Gbi6k4voPwHbllQWKMc8JOzk/snDMxgvf948zSqsUq7+////AIziEAA=",
+      "AQAAAAEUI3K3fOeX8Rbk5SJC7skKt3+UKpGYPNAj7vQ43PiTJQEAAABHUiECFz02UdnghYOPp7mUZ07MqZndCMKM1jPBtHqxTik0yJchAhpiiimGqXaZjM++rXGazptou7+ubq0krPlKvRCGCYsHUq7+////AIziEAA=",
+      "AQAAAAH7BL1UXv3k/N4fhZtOgJnvY9grmZ/XRxisrlQ29GKAlQAAAABHUiECb5/qLZ1jFzzSew3GRmhNAFyCv1zEUqOaYZhELjMHBcMhAz+/Gbi6k4voPwHbllQWKMc8JOzk/snDMxgvf948zSqsUq7+////AIziEAA=",
+      "AQAAAAHvNjlX/plKU/jwFM9ObeJuli6fc2dKxOMpgUq7PSTx6wEAAABHUiECP4BXQAN+WVAdKSHUyeGpyYI6dTkA/8244DrsgA1SUC4hA3IwdxzhGtBDtqvzxGfzEZFhEG5x6V7EGpBubMCdCYXrUq7+////AIziEAA="
+    ],
+    "singleTxsSignatures": [
+      {
+        "pubKey": "Am+f6i2dYxc80nsNxkZoTQBcgr9cxFKjmmGYRC4zBwXD",
+        "sig": "MEUCIQCSqdVt6sqYf88zV+6dQGXrt6+w27ZuOI6zF5QSVwY6sQIgUR/23C96kdXlJcn204NyAFZsWAQ6aBIS32805vrbHgI="
+      },
+      {
+        "pubKey": "AhpiiimGqXaZjM++rXGazptou7+ubq0krPlKvRCGCYsH",
+        "sig": "MEQCIHb3aDE28o958yTstQFtZXiODI5dSaUQItyceTdHs2IlAiAGOcufh/9VOdiNCqSuSL9q53xFB56Yv7QdQ4u7W9dsBw=="
+      },
+      {
+        "pubKey": "Am+f6i2dYxc80nsNxkZoTQBcgr9cxFKjmmGYRC4zBwXD",
+        "sig": "MEUCIQDYs48OUXHMjflMk57L5qMZEJs3ibR6AxuZyn6eDlbpwAIgL/O7HDDYIWMo3A0jSXdj3GxwkoDALaXLE3TvDjSDC9M="
+      },
+      {
+        "pubKey": "Aj+AV0ADfllQHSkh1MnhqcmCOnU5AP/NuOA67IANUlAu",
+        "sig": "MEUCIQDPyNRgvmZA29wbOC9nKwfu3F8+R6GXA4YeZRlvTOxvAQIgLjuaLPephpc234rgdeBt2I4l3wclSI6WMWUFqcCTGUI="
+      }
+    ]
+  },
+  "balance": {
+    "amAvailable": 311087500,
+    "amReserved": 0,
+    "amUnconfirmed": 0,
+    "amUnmature": 0,
+    "spentInDay": 0,
+    "spentInWeek": 0,
+    "spentInMonth": 0
+  },
+  "ts": 1489504787864,
+  "network": "test"
+}

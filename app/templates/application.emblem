@@ -1,0 +1,7 @@
+.ui.container
+  .ui.raised.segment
+    .ui.top.attached.teal.label Melis Recovery Tool
+
+    = recovery-wizard
+
+  == outlet
