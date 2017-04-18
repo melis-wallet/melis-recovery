@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import CM from 'npm:melis-api-js';
-const C = CM.C
+
 let self
 let cm
 

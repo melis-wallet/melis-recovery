@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 import CM from 'npm:melis-api-js';
 const Bitcoin = CM.Bitcoin
+const C = CM.C
 
 import MelisCredentials from 'npm:melis-credentials-seed';
 const bip39 = new MelisCredentials.credentials()
@@ -110,7 +111,14 @@ export default Ember.Component.extend({
       let recoveryInfo = this.get('recoveryInfo')
       let cm = recoveryInfo.cm
       const network = cm.decodeNetworkName(recoveryInfo.network)
-      const cosigners = recoveryInfo.accountInfo.cosigners
+      let accountInfo = recoveryInfo.accountInfo
+      let cosigners = accountInfo.cosigners
+      if (accountInfo.type === C.TYPE_PLAIN_HD) {
+        let walletHd = Bitcoin.HDNode.fromSeedHex(mnemonics[0].seed, network)
+        let accountHd = cm.deriveHdAccount_explicit(network, walletHd, accountInfo.accountNum)
+        cosigners = [{accountNum: accountInfo.accountNum, xpub: accountHd.neutered().toBase58()}]
+      }
+      console.log("Account type: " + accountInfo.type + " cosigners: ", cosigners)
       cosigners.forEach(x => x.found = false)
       cosigners.forEach(cosigner => {
         console.log("Checking cosigner " + cosigner.xpub + " num: " + cosigner.accountNum)
@@ -133,6 +141,7 @@ export default Ember.Component.extend({
           Ember.set(o, 'msg2', o.found ? null : 'Key not found in account')
       })
       this.set('validSeeds', allFound)
+//      }
     }
   }
 })

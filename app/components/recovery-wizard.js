@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import RSVP from 'rsvp';
 
 import CM from 'npm:melis-api-js';
 const C = CM.C
