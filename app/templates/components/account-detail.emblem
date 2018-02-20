@@ -1,8 +1,9 @@
 .ui.segment
-  .ui.red.right.ribbon.label Account Details
+  /.ui.red.right.ribbon.label Account Details
 
   .ui.form
-    .two.fields
+    h4.ui.dividing.header Account Details
+    /.two.fields
       .field
         label Name
         input value=recoveryInfo.accountInfo.meta.name type=text disabled=true
@@ -10,38 +11,57 @@
         label Created
         = input value=(moment-from-now recoveryInfo.accountInfo.cd) disabled=true
 
-    .six.fields
+    .three.fields
       .field
         .ui.labeled.button
-          .ui.basic.yellow.button Network
-          a.ui.yellow.left.pointing.label = recoveryInfo.network
+          .ui.basic.teal.button Name
+          a.ui.olive.left.pointing.label = recoveryInfo.accountInfo.meta.name
       .field
         .ui.labeled.button
-          .ui.basic.rose.button Type
-          a.ui.rose.left.pointing.label = recoveryInfo.accountInfo.type
+          .ui.basic.teal.button Created
+          a.ui.olive.left.pointing.label = moment-from-now recoveryInfo.accountInfo.cd
       .field
         .ui.labeled.button
-          .ui.basic.brown.button Num
-          a.ui.brown.left.pointing.label = recoveryInfo.accountInfo.accountNum
+          .ui.basic.teal.button Account Type
+          a.ui.olive.left.pointing.label = recoveryInfo.accountInfo.type
+
+    .three.fields
       .field
         .ui.labeled.button
-          .ui.basic.blue.button Number of cosigners:
-          a.ui.blue.left.pointing.label = recoveryInfo.accountInfo.cosigners.length
+          .ui.basic.yellow.button Coin
+          a.ui.yellow.left.pointing.label = recoveryInfo.accountInfo.coin
       .field
         .ui.labeled.button
-          .ui.basic.green.button Required signatures:
+          .ui.basic.yellow.button Description
+          a.ui.yellow.left.pointing.label = coin-decoder recoveryInfo.accountInfo.coin
+      .field
+        .ui.labeled.button
+          .ui.basic.yellow.button Account#
+          a.ui.yellow.left.pointing.label = recoveryInfo.accountInfo.accountNum
+
+    .three.fields
+      .field
+        .ui.labeled.button
+          .ui.basic.red.button Balance:
+          a.ui.green.left.pointing.label = out-btc totalBalance recoveryInfo.accountInfo.coin
+      .field
+        .ui.labeled.button
+          .ui.basic.red.button Required Signatures:
           a.ui.green.left.pointing.label = recoveryInfo.accountInfo.minSignatures
       .field
         .ui.labeled.button
+          .ui.basic.red.button Timelocked Transactions:
           = if recoveryInfo.accountInfo.serverMandatory
-            .ui.basic.red.button Timelocked txs:
             a.ui.red.left.pointing.label YES
           = else
-            .ui.basic.teal.button Timelocked txs:
             a.ui.teal.left.pointing.label NO
+      /.field
+        .ui.labeled.button
+          .ui.basic.green.button Number of Cosigners:
+          a.ui.green.left.pointing.label = recoveryInfo.accountInfo.cosigners.length
 
-    h4.ui.dividing.header Balance
-    .three.fields
+    /h4.ui.dividing.header Balance
+    /.three.fields
       .field
         label Confirmed
         .ui.tag.label = recoveryInfo.balance.amAvailable

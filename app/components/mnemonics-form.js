@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import Object from '@ember/object';
+import { computed } from '@ember/object';
+import { set } from '@ember/object';
 
 import CM from 'npm:melis-api-js';
 const Bitcoin = CM.Bitcoin
@@ -13,8 +16,8 @@ function normalizeWords(sourceWords) {
   return [words, arr]
 }
 
-const UserInput = Ember.Object.extend({
-  msg: Ember.computed('words', 'password', function () {
+const UserInput = Object.extend({
+  msg: computed('words', 'password', function () {
     const sourceWords = this.get('words')
     const password = this.get('password')
     if (!sourceWords)
@@ -23,20 +26,20 @@ const UserInput = Ember.Object.extend({
     if (arr.length !== 24 && arr.length !== 30)
       return 'wrong number of words'
     else if (!bip39.isMnemonicValid(words))
-      return 'invalid mnemonics'
+      return 'invalid set of mnemonics'
     else if (arr.length === 30 && !bip39.isMnemonicEncrypted(words))
       return 'invalid encrypted mnemonics'
-//    else if (arr.length === 30) {
-//      if (!password || password.length < 6)
-//        return 'passphrase too short'
-//      else if (!bip39.isMnemonicEncrypted(words))
-//        return 'invalid encrypted mnemonics'
-//    } else
+    //    else if (arr.length === 30) {
+    //      if (!password || password.length < 6)
+    //        return 'passphrase too short'
+    //      else if (!bip39.isMnemonicEncrypted(words))
+    //        return 'invalid encrypted mnemonics'
+    //    } else
     else
       return null
   }),
 
-  passMsg: Ember.computed('words', 'password', function () {
+  passMsg: computed('words', 'password', function () {
     const sourceWords = this.get('words')
     const password = this.get('password')
     if (!sourceWords)
@@ -49,27 +52,35 @@ const UserInput = Ember.Object.extend({
   }),
 
   // Non funziona
-//  pwDisabled: Ember.computed('words', function () {
-//    const sourceWords = this.get('words')
-//    if (!sourceWords)
-//      return true
-//    const [words, arr] = normalizeWords(sourceWords)
-//    return arr.length !== 30
-//  })
+  //  pwDisabled: computed('words', function () {
+  //    const sourceWords = this.get('words')
+  //    if (!sourceWords)
+  //      return true
+  //    const [words, arr] = normalizeWords(sourceWords)
+  //    return arr.length !== 30
+  //  })
 })
 
-export default Ember.Component.extend({
+function calcXpubForSeed(cm, coin, seed, accountNum) {
+  const walletHd = cm.hdNodeFromHexSeed(coin, seed)
+  const accountHd = cm.deriveHdAccount(walletHd, accountNum)
+  const xpub = accountHd.neutered().toBase58()
+  return xpub
+}
+
+export default Component.extend({
   mnemonics: [],
-  numNeeded: 3,
+  numNeeded: 'unknown',
 
   init() {
     this._super(...arguments)
-    let parent = this.get('parent')
+    const parent = this.get('parent')
     if (parent) {
       parent.set('mnemonicsForm', this)
     }
-    let recoveryInfo = this.get('recoveryInfo')
-    let numNeeded = recoveryInfo.accountInfo.minSignatures
+    const recoveryInfo = this.get('recoveryInfo')
+    const numNeeded = recoveryInfo.accountInfo.minSignatures
+    this.set('numNeeded', numNeeded)
     console.log("Initing mnemonics form component with num: " + numNeeded)
     let arr = []
     for (let i = 0; i < numNeeded; i++)
@@ -79,69 +90,78 @@ export default Ember.Component.extend({
     this.set('validSeeds', false)
   },
 
-  validMnemonics: Ember.computed('mnemonics.@each.{msg,passMsg}', function () {
+  validMnemonics: computed('mnemonics.@each.{msg,passMsg}', function () {
     //return !this.get('mnemonics').filterBy('msg').length
-    let res = this.get('mnemonics').filter(o =>
+    const res = this.get('mnemonics').filter(o =>
       o.get('msg') || o.get('passMsg')).length
     return !res
   }),
 
   validSeeds: null,
-  invalidForm: Ember.computed('validMnemonics', 'validSeeds', function () {
+  invalidForm: computed('validMnemonics', 'validSeeds', function () {
     return !this.get('validMnemonics') || !this.get('validSeeds')
   }),
-//  seeds: Ember.computed('invalidForm', function () {
-//    let invalidForm = this.get('invalidForm')
-//    if (invalidForm)
-//      return null
-//    let mnemonics = this.get('mnemonics')
-//    return mnemonics.map(o => {
-//      return bip39.parseMnemonics(o.words, o.password)
-//    })
-//  }),
-//
+  //  seeds: computed('invalidForm', function () {
+  //    let invalidForm = this.get('invalidForm')
+  //    if (invalidForm)
+  //      return null
+  //    let mnemonics = this.get('mnemonics')
+  //    return mnemonics.map(o => {
+  //      return bip39.parseMnemonics(o.words, o.password)
+  //    })
+  //  }),
+  //
   actions: {
     validateSeeds: function () {
-      let mnemonics = this.get('mnemonics')
-      mnemonics.forEach(o => {
+      const allMnemonics = this.get('mnemonics')
+      allMnemonics.forEach(o => {
         o.seed = bip39.parseMnemonics(o.words, o.password).seed
         o.found = false
-        Ember.set(o, 'msg2', null)
+        o.xpub = null
+        set(o, 'msg2', null)
       })
-      let recoveryInfo = this.get('recoveryInfo')
-      let cm = recoveryInfo.cm
-      const network = cm.decodeNetworkName(recoveryInfo.network)
-      let accountInfo = recoveryInfo.accountInfo
+      const recoveryInfo = this.get('recoveryInfo')
+      const cm = recoveryInfo.cm
+      const accountInfo = recoveryInfo.accountInfo
+      const coin = recoveryInfo.accountInfo.coin
       let cosigners = accountInfo.cosigners
-      if (accountInfo.type === C.TYPE_PLAIN_HD) {
-        let walletHd = Bitcoin.HDNode.fromSeedHex(mnemonics[0].seed, network)
-        let accountHd = cm.deriveHdAccount_explicit(network, walletHd, accountInfo.accountNum)
-        cosigners = [{accountNum: accountInfo.accountNum, xpub: accountHd.neutered().toBase58()}]
+      if (accountInfo.type === C.TYPE_PLAIN_HD || accountInfo.type === C.TYPE_2OF2_SERVER) {
+        cosigners = [{ accountNum: accountInfo.accountNum, xpub: calcXpubForSeed(cm, coin, allMnemonics[0].seed, accountInfo.accountNum) }]
       }
       console.log("Account type: " + accountInfo.type + " cosigners: ", cosigners)
       cosigners.forEach(x => x.found = false)
       cosigners.forEach(cosigner => {
-        console.log("Checking cosigner " + cosigner.xpub + " num: " + cosigner.accountNum)
-        let found = mnemonics.find(o => {
-          let walletHd = Bitcoin.HDNode.fromSeedHex(o.seed, network)
-          let accountHd = cm.deriveHdAccount_explicit(network, walletHd, cosigner.accountNum)
-          return accountHd.neutered().toBase58() === cosigner.xpub
+        console.log("Looking for cosigner " + cosigner.xpub + " / " + cosigner.accountNum)
+        const cosignerSeed = allMnemonics.filter(o => !o.found).find(o => {
+          if (!o.xpub) {
+            const xpub = calcXpubForSeed(cm, coin, o.seed, cosigner.accountNum)
+            if (xpub === cosigner.xpub) {
+              o.xpub = xpub
+              o.mandatory = cosigner.mandatory
+              o.found = true
+            }
+            console.log("found: " + o.found + " xpub: " + xpub + " seed: " + o.seed + " mnemonics:" + o.words)
+          }
+          return o.xpub === cosigner.xpub
         })
-        if (found)
-          cosigner.found = found.found = true
+        if (cosignerSeed)
+          cosigner.found = true
       })
-      let allFound = mnemonics.every(o => o.found)
-      console.log("All cosigners found: " + allFound)
-      mnemonics.forEach(o => {
+
+      const numMandatorySigs = accountInfo.cosigners.reduce((v, o) => v + (o.mandatory ? 1 : 0), 0)
+      const allMandatorySeedsFound = allMnemonics.reduce((v, o) => o.mandatory ? v && o.found : v, true)
+      const numNonMandatorySeedsFound = allMnemonics.reduce((v, o) => v + ((o.found && !o.mandatory) ? 1 : 0), 0)
+      const enoughSeedsFound = allMandatorySeedsFound && numNonMandatorySeedsFound >= (accountInfo.minSignatures - numMandatorySigs)
+      console.log("numMandatorySigs: " + numMandatorySigs + " allMandatorySeedsFound: " + allMandatorySeedsFound + " numNonMandatorySeedsFound: " + numNonMandatorySeedsFound)
+      allMnemonics.forEach(o => {
         console.log(o.seed + " found: " + o.found)
         const [words, arr] = normalizeWords(o.words)
         if (arr.length === 30)
-          Ember.set(o, 'msg2', o.found ? null : 'Wrong key: maybe bad passphrase?')
+          set(o, 'msg2', o.found ? null : 'Wrong key: maybe bad passphrase?')
         else
-          Ember.set(o, 'msg2', o.found ? null : 'Key not found in account')
+          set(o, 'msg2', o.found ? null : 'Key not found in account')
       })
-      this.set('validSeeds', allFound)
-//      }
+      this.set('validSeeds', enoughSeedsFound)
     }
   }
 })

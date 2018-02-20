@@ -29,7 +29,7 @@ br
     ' Please select a correct recovery file
 
   = if fileValidated
-    = account-detail recoveryInfo=recoveryInfo
+    = account-detail recoveryInfo=recoveryInfo totalBalance=totalBalance
 
   .ui.right.aligned.segment
     button.ui.button click='goStep1' class={step1Disabled:disabled} Next Step
@@ -54,7 +54,7 @@ br
 
   = mnemonics-form parent=this recoveryInfo=recoveryInfo
   br
-  button.ui.button click='goStep0' Back
+  button.ui.button click='goStep0' Restart
   button.ui.right.floated.button click='goStep4' class={mnemonicsForm.invalidForm:disabled} Sign And Broadcast!
 
 = else if (eq step 4)

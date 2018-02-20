@@ -1,9 +1,10 @@
 .ui.segment
   .ui.teal.right.ribbon.label
-    = mnemonics.length
+    /= mnemonics.length
+    = numNeeded
     '
     ' mnemonics needed out of
-    = numNeeded
+    = recoveryInfo.accountInfo.cosigners.length
     '
     ' cousers of the account
 

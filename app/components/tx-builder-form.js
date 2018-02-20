@@ -1,20 +1,21 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 let self
 let cm
 
 function buildTxList(recoveryInfo, oneBig, allSelected) {
-  let recoveryData = recoveryInfo.recoveryData
-  let accountInfo = recoveryInfo.accountInfo
-  let unspents = recoveryData.unspents
-  let feesPerByte = recoveryInfo.satoshisPerByte
+  const recoveryData = recoveryInfo.recoveryData
+  const accountInfo = recoveryInfo.accountInfo
+  const unspents = recoveryData.unspents
+  const feesPerByte = recoveryInfo.satoshisPerByte
   if (oneBig) {
-    let amount = unspents.reduce((accumulator, item) => {
+    const amount = unspents.reduce((accumulator, item) => {
       return accumulator + item.amount
     }, 0)
     console.log("[buildTxList] big tx with amount:", amount)
-    let txSize = cm.estimateTxSize(unspents.length, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
-    let fees = Math.ceil(feesPerByte * txSize)
+    const txSize = cm.estimateTxSize(unspents.length, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
+    const fees = Math.ceil(feesPerByte * txSize)
     return [{
         unspents: unspents,
         address: '',
@@ -27,30 +28,32 @@ function buildTxList(recoveryInfo, oneBig, allSelected) {
       }]
   }
 
-  let res = []
+  const res = []
   for (let i = 0; i < unspents.length; i++) {
-    let unspent = unspents[i]
+    const unspent = unspents[i]
     if (!allSelected && !unspent.selected)
       continue
     console.log("[buildTxList] tx with single input:", unspent)
-    let txSize = cm.estimateTxSize(1, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
-    let fees = Math.ceil(feesPerByte * txSize)
+    const txSize = cm.estimateTxSize(1, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
+    const fees = Math.ceil(feesPerByte * txSize)
+    const txData = recoveryData.singleTxs ? recoveryData.singleTxs[i] : null
     res.push({
-      unspent: unspent,
+      unspents: [unspent],
       address: '',
-      fees: fees,
       amount: unspent.amount,
-      txData: recoveryData.singleTxs[i]
+      fees, txData
     })
   }
   return res
 }
 
 function targetAddressesValid(txBuilder) {
-  return txBuilder.every(o => cm.validateAddress(o.address))
+  const recoveryInfo = self.get('recoveryInfo')
+  const coin = recoveryInfo.accountInfo.coin
+  return txBuilder.every(o => cm.isValidAddress(coin, o.address))
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   parent: null,
   txBuilder: null,
@@ -71,7 +74,7 @@ export default Ember.Component.extend({
     this.set('txBuilder', txBuilder)
   },
 
-  formInvalid: Ember.computed('txBuilder.@each.address', function () {
+  formInvalid: computed('txBuilder.@each.address', function () {
     let txBuilder = this.get('txBuilder')
     return !targetAddressesValid(txBuilder)
   }),

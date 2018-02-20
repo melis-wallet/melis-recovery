@@ -1,7 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { set } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 import CM from 'npm:melis-api-js';
-const C = CM.C
+//const C = CM.C
 
 let self
 
@@ -9,7 +12,8 @@ function goStep(self, n) {
   self.set('step', n)
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
+  explorer: service(),
   step: 0,
   filename: null,
   fileValidated: false,
@@ -30,6 +34,7 @@ export default Ember.Component.extend({
   },
 
   fileChanged: (function () {
+    const explorer = self.get('explorer')
     this.set('fileValidated', false)
     let filename = this.get('filename')
     console.log('Reading file: ' + filename)
@@ -48,16 +53,21 @@ export default Ember.Component.extend({
       //console.log('testo: ', e.target.result)
       input += e.target.result
     }
+
     reader.onloadend = () => {
       //console.log('loaded:', input)
       try {
         const recoveryInfo = JSON.parse(input)
-        if (!recoveryInfo.accountInfo || !recoveryInfo.recoveryData || !recoveryInfo.network || !recoveryInfo.balance)
+        console.log("Loaded JSON: ", recoveryInfo)
+        if (!recoveryInfo.accountInfo || !recoveryInfo.accountInfo.coin || !recoveryInfo.recoveryData)
           throw new Error("Input json seems not a Melis recovery file")
-        const isTestnet = recoveryInfo.network === C.CHAIN_TESTNET
-        recoveryInfo.isTestnet = isTestnet
-        recoveryInfo.cm = new CM(isTestnet ? {apiDiscoveryUrl: C.MELIS_TEST_DISCOVER} : {})
+        const accountInfo = recoveryInfo.accountInfo
+        const coin = accountInfo.coin
+        const isTestnet = coin.startsWith('T') && accountInfo.coin.length === 4
+        recoveryInfo.cm = new CM({ useTestPaths: isTestnet })
         this.set('recoveryInfo', recoveryInfo)
+        if (!explorer.isCoinSupported(coin))
+          throw new Error("Recovery file is for coin " + coin + " which is unsupported")
         this.set('fileValidated', true)
         console.log(recoveryInfo)
       } catch (e) {
@@ -65,15 +75,22 @@ export default Ember.Component.extend({
         this.set('fileError', e.message)
       }
     }
+
     reader.readAsText(file)
   }).observes('filename'),
 
-  step1Disabled: Ember.computed('fileValidated', function () {
+  step1Disabled: computed('fileValidated', function () {
     return !this.get('fileValidated')
   }),
 
-  step2Disabled: Ember.computed('txData', function () {
+  step2Disabled: computed('txData', function () {
     return !this.get('txData')
+  }),
+
+  totalBalance: computed('recoveryInfo.balance.{amUnmature,amUnconfirmed,amAvailable}', function () {
+    const recoveryInfo = self.get('recoveryInfo')
+    const balance = recoveryInfo.balance
+    return balance.amAvailable + balance.amUnconfirmed + balance.amUnmature
   }),
 
   actions: {
@@ -81,13 +98,13 @@ export default Ember.Component.extend({
     goStep1: () => goStep(self, 1),
     goTxBuilderForm: function (oneBig) {
       //this.set('oneBig', oneBig)
-      let recoveryInfo = self.get('recoveryInfo')
-      let unspentsSelector = self.get('unspentsSelector')
-      let selectionResult = {
+      const recoveryInfo = self.get('recoveryInfo')
+      const unspentsSelector = self.get('unspentsSelector')
+      const selectionResult = {
         oneBig: oneBig,
         allSelected: unspentsSelector.allSelected
       }
-      Ember.set(recoveryInfo, 'selectionResult', selectionResult)
+      set(recoveryInfo, 'selectionResult', selectionResult)
       console.log('selection result:', selectionResult)
       goStep(self, 2)
     },
@@ -96,7 +113,7 @@ export default Ember.Component.extend({
 
     pushTx: function (obj, provider) {
       console.log('TEST provider: ' + provider, obj)
-      Ember.set(obj, provider, {res: 'todo'})
+      set(obj, provider, { res: 'todo' })
     }
   }
 })

@@ -1,6 +1,6 @@
 {
   "name": "melis-recovery",
   "dependencies": {
-    "semantic-ui": "^2.2.10"
+    "semantic-ui": "^2.2.14"
   }
 }
