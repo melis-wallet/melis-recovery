@@ -29,7 +29,13 @@
       .field
         .ui.labeled.button
           .ui.basic.yellow.button Coin
-          a.ui.yellow.left.pointing.label = recoveryInfo.accountInfo.coin
+          a.ui.yellow.left.pointing.label
+            = recoveryInfo.accountInfo.coin
+          /  img src=(concat 'icons/' 'bch-icon.svg')
+          //img src=(concat 'icons/' account.coin '.svg')
+          / src=(concat 'icon-' foo)
+          / se è un elemento html
+          / src="{{concat ...}}"
       .field
         .ui.labeled.button
           .ui.basic.yellow.button Description

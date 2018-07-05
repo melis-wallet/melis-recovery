@@ -4,15 +4,15 @@ import { computed } from '@ember/object';
 import { set } from '@ember/object';
 
 import CM from 'npm:melis-api-js';
-const Bitcoin = CM.Bitcoin
+//const Bitcoin = CM.Bitcoin
 const C = CM.C
 
 import MelisCredentials from 'npm:melis-credentials-seed';
 const bip39 = new MelisCredentials.credentials()
 
 function normalizeWords(sourceWords) {
-  let words = sourceWords.trim().replace(/\s\s+/g, ' ')
-  let arr = words.split(' ')
+  const words = sourceWords.trim().replace(/\s\s+/g, ' ')
+  const arr = words.split(' ')
   return [words, arr]
 }
 
@@ -62,15 +62,16 @@ const UserInput = Object.extend({
 })
 
 function calcXpubForSeed(cm, coin, seed, accountNum) {
-  const walletHd = cm.hdNodeFromHexSeed(coin, seed)
-  const accountHd = cm.deriveHdAccount(walletHd, accountNum)
-  const xpub = accountHd.neutered().toBase58()
+  const walletHd = cm.hdNodeFromHexSeed(seed)
+  const accountHd = cm.deriveHdAccount(walletHd, accountNum, undefined, undefined, coin)
+  const xpub = cm.hdNodeToBase58Xpub(accountHd, coin)
+  //const xpub = accountHd.neutered().toBase58()
   return xpub
 }
 
 export default Component.extend({
-  mnemonics: [],
-  numNeeded: 'unknown',
+  mnemonics: null,
+  numNeeded: null,
 
   init() {
     this._super(...arguments)
@@ -82,7 +83,7 @@ export default Component.extend({
     const numNeeded = recoveryInfo.accountInfo.minSignatures
     this.set('numNeeded', numNeeded)
     console.log("Initing mnemonics form component with num: " + numNeeded)
-    let arr = []
+    const arr = []
     for (let i = 0; i < numNeeded; i++)
       arr.push(UserInput.create())
     this.set('mnemonics', arr)

@@ -17,15 +17,15 @@ function buildTxList(recoveryInfo, oneBig, allSelected) {
     const txSize = cm.estimateTxSize(unspents.length, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
     const fees = Math.ceil(feesPerByte * txSize)
     return [{
-        unspents: unspents,
-        address: '',
-        fees: fees,
-        amount: amount,
-        txData: {
-          rawTx: recoveryData.bigTx,
-          sigs: recoveryData.bigTxSignatures
-        }
-      }]
+      unspents: unspents,
+      address: '',
+      fees: fees,
+      amount: amount,
+      txData: {
+        rawTx: recoveryData.bigTx,
+        sigs: recoveryData.bigTxSignatures
+      }
+    }]
   }
 
   const res = []
@@ -36,7 +36,11 @@ function buildTxList(recoveryInfo, oneBig, allSelected) {
     console.log("[buildTxList] tx with single input:", unspent)
     const txSize = cm.estimateTxSize(1, 1, cm.estimateInputSigSizeFromAccount(accountInfo))
     const fees = Math.ceil(feesPerByte * txSize)
-    const txData = recoveryData.singleTxs ? recoveryData.singleTxs[i] : null
+    const singleTxData = recoveryData.singleTxs ? recoveryData.singleTxs[i] : null
+    const txData = singleTxData ? {
+      rawTx: singleTxData.rawTx,
+      sigs: [{ sig: singleTxData.sig, pubKey: singleTxData.pubKey }]
+    } : null
     res.push({
       unspents: [unspent],
       address: '',

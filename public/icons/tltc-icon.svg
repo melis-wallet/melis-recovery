@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   viewBox="0.847 0.876 128 128"
+   version="1.1"
+   id="svg10"
+   sodipodi:docname="tltc-icon.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Litecoin</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs14" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="774"
+     inkscape:window-height="480"
+     id="namedview12"
+     showgrid="false"
+     showguides="false"
+     inkscape:zoom="2.1360282"
+     inkscape:cx="74.347846"
+     inkscape:cy="70.312501"
+     inkscape:window-x="267"
+     inkscape:window-y="287"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg10" />
+  <title
+     id="title2">Litecoin</title>
+  <path
+     d="m 113.72231,62.840678 c 0,26.680035 -22.103202,48.308522 -49.36927,48.308522 -27.266367,0 -49.36987,-21.628487 -49.36987,-48.308522 0,-26.679745 22.103503,-48.307938 49.36987,-48.307938 27.265767,0 49.36927,21.628193 49.36927,48.307938"
+     id="path4"
+     inkscape:connector-curvature="0"
+     style="fill:#bebebe;stroke-width:0.29664558" />
+  <path
+     d="m 103.24065,62.841264 c 0,21.01403 -17.410571,38.051666 -38.88761,38.051666 -21.47674,0 -38.888504,-17.037636 -38.888504,-38.051666 0,-21.015787 17.411764,-38.052256 38.888504,-38.052256 21.477339,0 38.88761,17.036176 38.88761,38.052256"
+     id="path6"
+     inkscape:connector-curvature="0"
+     style="fill:#bebebe;stroke-width:0.29664558" />
+  <path
+     d="m 61.467523,75.745821 3.206696,-11.815017 7.591951,-2.714017 1.888391,-6.943639 -0.06448,-0.17225 -7.473196,2.671466 5.384482,-19.838805 h -15.27057 l -7.041656,25.890099 -5.879296,2.10161 -1.94267,7.158436 5.874795,-2.099847 -4.150142,15.258225 h 40.641047 l 2.605422,-9.496261 H 61.467523"
+     id="path8"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;stroke-width:0.29664558" />
+  <rect
+     style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1.54137659"
+     id="rect3699"
+     width="37.440475"
+     height="42.5"
+     x="76.281837"
+     y="62.840679" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:43.17460251px;line-height:125%;font-family:'Droid Sans';-inkscape-font-specification:'Droid Sans Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.67460316px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="82.678673"
+     y="99.431961"
+     id="text3707"><tspan
+       sodipodi:role="line"
+       id="tspan3705"
+       x="82.678673"
+       y="99.431961"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Droid Sans';-inkscape-font-specification:'Droid Sans Bold';stroke-width:0.67460316px">T</tspan></text>
+</svg>

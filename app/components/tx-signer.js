@@ -32,7 +32,7 @@ function signTxs() {
   const cm = recoveryInfo.cm
   console.log('[tx-signer] Account type: ' + accountInfo.type + ' coin: ' + coin + " useTestPaths: " + cm.useTestPaths)
   const seeds = seedInfo.map(item => item.seed)
-  let promises = []
+  const promises = []
   for (let i = 0; (!onlyOneBigTx && i < txBuilder.length) || (onlyOneBigTx && i === 0); i++) {
     const inputData = txBuilder[i]
     console.log('accountInfo.type: ' + accountInfo.type + ' inputData:', inputData)
@@ -45,7 +45,7 @@ function signTxs() {
         fees: inputData.fees, destinationAddress: inputData.address
       })
     } else {
-      let tx = Bitcoin.Transaction.fromBuffer(new Buffer(inputData.txData.rawTx, 'base64'))
+      const tx = Bitcoin.Transaction.fromBuffer(new Buffer(inputData.txData.rawTx, 'base64'))
       const outputSig = cm.toOutputScript(coin, inputData.address)
       tx.addOutput(outputSig, inputData.amount - inputData.fees)
       promise = cm.recoveryPrepareMultiSigTx(accountInfo, tx, unspents, seeds, inputData.txData.sigs)

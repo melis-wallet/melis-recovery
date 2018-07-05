@@ -8,7 +8,9 @@ let self
 //const CHAINZ_TESTNET_UNSPENT_QUERY = "https://chainz.cryptoid.info/tgrs/api.dws?q=unspent&key=29fdcec1c375&active="
 // https://chainz.cryptoid.info/grs/api.dws?q=unspent&active=Fhp3sxymf2innucCmMphjprQauTByQevQ2&key=29fdcec1c375
 // https://groestlsight.groestlcoin.org/api/addr/[:addr]/utxo[?noCache=1]
+// https://groestlsight-test.groestlcoin.org/api/addrs/2N5N5x8XNbMLxfdU145bM37SY4aJCfUAaTC/utxo?noCache=1
 
+// TGTS: https://groestlsight-test.groestlcoin.org/
 // BTC:  https://btc.blockdozer.com/insight-api/sync
 // TBTC: https://tbtc.blockdozer.com/insight-api/sync
 // BCH:  https://blockdozer.com/insight-api/sync
@@ -20,7 +22,9 @@ const coinInsightPrefixMap = {
   BCH: "https://bch-insight.bitpay.com/api/",
   TBCH: "https://test-bch-insight.bitpay.com/api/",
   LTC: "https://insight.litecore.io/api/",
-  GRS: "https://groestlsight.groestlcoin.org/api/"
+  TLTC: "https://testnet.litecore.io/api/",
+  GRS: "https://groestlsight.groestlcoin.org/api/",
+  TGRS: "https://groestlsight-test.groestlcoin.org/api/"
 }
 
 // const coinInsightPrefixMap = {
@@ -63,7 +67,7 @@ function loadJsonUrl(url, params) {
 }
 
 function insightQueryTxo(coin, addrs) {
-  const url = getInsightPrefixForCoin(coin) + "addrs/" + addrs.join(',') + "/utxo"
+  const url = getInsightPrefixForCoin(coin) + "addrs/" + addrs.join(',') + "/utxo?noCache=1"
   return loadJsonUrl(url)
 }
 
@@ -113,6 +117,8 @@ export default Service.extend({
     return insightQueryTxo(coin, addrs).then(res => {
       selectedUnspents.forEach(u => {
         const found = res.some(o => o.txid.toLowerCase() === u.tx.toLowerCase() && o.vout === u.n)
+        if (!u.height && u.confirmations > 0)
+          u.height = height - u.confirmations
         if (found)
           if (u.blockExpire >= height)
             set(u, 'redeemStatus', "timelocked")

@@ -13,7 +13,6 @@ You will need the following things properly installed on your computer.
 
 * [Git](https://git-scm.com/)
 * [Node.js](https://nodejs.org/) (with NPM)
-* [Bower](https://bower.io/)
 * [Ember CLI](https://ember-cli.com/)
 
 ## Installation
@@ -21,7 +20,6 @@ You will need the following things properly installed on your computer.
 * `git clone <repository-url>` this repository
 * `cd melis-recovery`
 * `npm install`
-* `bower install`
 
 ## Running / Development
 
@@ -30,7 +28,7 @@ You will need the following things properly installed on your computer.
 
 ### Hosted version
 
-You can use an hosted deployed release at this [address](https://recovery.melis.io/)
+You can use an hosted deployed release at this [recovery.melis.io](https://recovery.melis.io/)
 
 ## Further Reading / Useful Links
 
