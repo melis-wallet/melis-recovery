@@ -19,7 +19,7 @@ function normalizeWords(sourceWords) {
 const UserInput = Object.extend({
   msg: computed('words', 'password', function () {
     const sourceWords = this.get('words')
-    const password = this.get('password')
+    // const password = this.get('password')
     if (!sourceWords)
       return 'mnemonics not entered'
     const [words, arr] = normalizeWords(sourceWords)
@@ -63,9 +63,8 @@ const UserInput = Object.extend({
 
 function calcXpubForSeed(cm, coin, seed, accountNum) {
   const walletHd = cm.hdNodeFromHexSeed(seed)
-  const accountHd = cm.deriveHdAccount(walletHd, accountNum, undefined, undefined, coin)
+  const accountHd = cm.deriveAccountHdKey(walletHd, accountNum, coin)
   const xpub = cm.hdNodeToBase58Xpub(accountHd, coin)
-  //const xpub = accountHd.neutered().toBase58()
   return xpub
 }
 

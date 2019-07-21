@@ -31,6 +31,14 @@ br
   = if fileValidated
     = account-detail recoveryInfo=recoveryInfo totalBalance=totalBalance
 
+  = if explorerError
+    .ui.red.label
+     ' Explorer not working: try using a browser extensions to disable CORS checking
+    .ui.green.label
+      a href="https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf" On Chrome
+    .ui.teal.label
+      a href="https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/" On Firefox
+
   .ui.right.aligned.segment
     button.ui.button click='goStep1' class={step1Disabled:disabled} Next Step
 

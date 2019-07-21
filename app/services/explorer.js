@@ -1,9 +1,132 @@
 import Service from '@ember/service';
-import { inject as service } from '@ember/service';
-import { set } from '@ember/object';
+import {
+  inject as service
+} from '@ember/service';
+import {
+  set
+} from '@ember/object';
+
+import DriverBlockchair from 'melis-recovery/classes/driver-blockchair'
+import DriverInsight from 'melis-recovery/classes/driver-insight'
+import DriverBlockbook from 'melis-recovery/classes/driver-blockbook'
 
 let self
 
+const DRIVER_LIST = {}
+
+function addDriver(coin, driver) {
+  let arr = DRIVER_LIST[coin]
+  if (arr === undefined) {
+    arr = []
+    DRIVER_LIST[coin] = arr
+  }
+  arr.push(driver)
+}
+
+async function addDrivers(className) {
+  let coins = await className.getSupportedCoins()
+  console.log("COINS for " + className.name + ": ", coins)
+  coins.forEach(coin => addDriver(coin, new className(coin)))
+}
+
+function printDrivers() {
+  Object.keys(DRIVER_LIST).forEach(coin => {
+    const arr = DRIVER_LIST[coin]
+    let names = ""
+    arr.forEach(o => names += o.getName() + " ")
+    console.log(coin + " drivers: " + names)
+  })
+}
+
+(async () => {
+  await addDrivers(DriverBlockchair)
+  await addDrivers(DriverBlockbook)
+  await addDrivers(DriverInsight)
+  //DriverBlockchair.getSupportedCoins().forEach(coin => addDriver(coin, new DriverBlockchair(coin)))
+  //DriverInsight.getSupportedCoins().forEach(coin => addDriver(coin, new DriverInsight(coin)))
+  // let coins = await DriverBlockbook.getSupportedCoins()
+  // console.log("COINS: ", coins)
+  // coins.forEach(coin => addDriver(coin, new DriverBlockbook(coin)))
+  printDrivers()
+})()
+
+function getDriver(coin) {
+  // const driverName = self.get('driverName')
+  const drivers = DRIVER_LIST[coin]
+  console.log("[getDriver] coin: " + coin + " drivers: ", drivers)
+  if (!drivers)
+    throw "Driver for '" + name + "' not found"
+  return drivers[0]
+
+  // const Driver = Drivers[driverName]
+  // if (!Driver)
+  //   throw "Driver for '" + name + "' not found"
+  // return new Driver(coin)
+}
+
+export default Service.extend({
+  driverName: 'blockchair',
+  ajax: service(),
+
+  getName: function (coin) {
+    console.log("call to getName" + coin)
+    return getDriver(coin).getName()
+  },
+
+  isCoinSupported: async function (coin) {
+    return DRIVER_LIST[coin] != null
+  },
+
+  pushTx: function (coin, rawtx) {
+    return getDriver(coin).pushTx(rawtx)
+  },
+
+  getBlockchainHeight: async function (coin) {
+    console.log("call to getBlockChainHeight " + coin)
+    return getDriver(coin).getNumBlocks()
+  },
+
+  loadUnspentsStatus: async function (coin, allUnspents, height, allSelected) {
+    const driverName = this.get('driverName')
+    console.log("[loadUnspentsStatus " + driverName + "] coin: " + coin + " height: " + height + " allSelected: " + allSelected + " allUnspents: ", allUnspents)
+    const selectedUnspents = allUnspents.filter(u => allSelected || u.selected)
+    console.log("coin: " + coin + " # allUspents: " + allUnspents.length + " selected: " + selectedUnspents.length)
+    const addrs = []
+    selectedUnspents.forEach(u => {
+      const address = u.aa.address
+      //if (!addrs.find(o => o == address))
+      if (!addrs.includes(address))
+        addrs.push(address)
+    });
+    console.log("# of different selected addrs: " + addrs.length)
+    if (addrs.length === 0)
+      return // emptyPromise()
+    const res = await getDriver(coin).findUnspents(addrs)
+    console.log("findUnspents result:", res)
+    selectedUnspents.forEach(u => {
+      const found = res.some(o => o.txid.toLowerCase() === u.tx.toLowerCase() && o.vout === u.n)
+      if (!u.height && u.confirmations > 0)
+        u.height = height - u.confirmations
+      if (found)
+        if (u.blockExpire >= height)
+          set(u, 'redeemStatus', "timelocked")
+      else
+        set(u, 'redeemStatus', "redeemable")
+      else
+        set(u, 'redeemStatus', "spent")
+      console.log("unspent found: " + found + " for ", u)
+    })
+    return allUnspents
+  },
+
+  init() {
+    this._super(...arguments)
+    self = this
+  }
+})
+
+
+// Other possible drivers to write:
 //const CHAINZ_KEY = '29fdcec1c375'
 //const CHAINZ_TESTNET_UNSPENT_QUERY = "https://chainz.cryptoid.info/tgrs/api.dws?q=unspent&key=29fdcec1c375&active="
 // https://chainz.cryptoid.info/grs/api.dws?q=unspent&active=Fhp3sxymf2innucCmMphjprQauTByQevQ2&key=29fdcec1c375
@@ -16,19 +139,7 @@ let self
 // BCH:  https://blockdozer.com/insight-api/sync
 // TBCH: https://tbch.blockdozer.com/insight-api/sync
 
-const coinInsightPrefixMap = {
-  BTC: "https://insight.bitpay.com/api/",
-  TBTC: "https://test-insight.bitpay.com/api/",
-  BCH: "https://bch-insight.bitpay.com/api/",
-  TBCH: "https://test-bch-insight.bitpay.com/api/",
-  LTC: "https://insight.litecore.io/api/",
-  TLTC: "https://testnet.litecore.io/api/",
-  GRS: "https://groestlsight.groestlcoin.org/api/",
-  TGRS: "https://groestlsight-test.groestlcoin.org/api/"
-}
-
-// const coinInsightPrefixMap = {
-//   BTC: "https://btc.blockdozer.com/insight-api/",
+// BTC: "https://btc.blockdozer.com/insight-api/",
 //   TBTC: "https://tbtc.blockdozer.com/insight-api/",
 //   BCH: "https://blockdozer.com/insight-api/",
 //   TBCH: "https://tbch.blockdozer.com/insight-api/",
@@ -44,96 +155,3 @@ const coinInsightPrefixMap = {
 //   { name: 'BlockCypher.com', code: 'blockcyphercom' },
 //   { name: 'Chain.so', code: 'chainso' }
 // ]
-
-function emptyPromise() {
-  return new Promise((resolve, reject) => resolve())
-}
-
-function getInsightPrefixForCoin(coin) {
-  if (coinInsightPrefixMap[coin])
-    return coinInsightPrefixMap[coin]
-  throw "Unable to find an Insight service for coin: " + coin
-}
-
-function loadJsonUrl(url, params) {
-  console.log("Loading JSON from url: " + url)
-  if (!params)
-    params = {}
-  return self.get('ajax').request(url, params).then(res => {
-    console.log("api result: ", res)
-    //return JSON.parse(res)
-    return res
-  })
-}
-
-function insightQueryTxo(coin, addrs) {
-  const url = getInsightPrefixForCoin(coin) + "addrs/" + addrs.join(',') + "/utxo?noCache=1"
-  return loadJsonUrl(url)
-}
-
-export default Service.extend({
-  ajax: service(),
-
-  getBaseApi: function (coin) {
-    return getInsightPrefixForCoin(coin)
-  },
-
-  isCoinSupported: function (coin) {
-    return !!coinInsightPrefixMap[coin]
-  },
-
-  pushTx: function (coin, rawtx) {
-    const params = {
-      method: 'POST', data: { rawtx }
-    }
-    const url = getInsightPrefixForCoin(coin) + "tx/send"
-    return loadJsonUrl(url, params)
-      .then(res => res.txid)
-      .catch(err => {
-        console.log("Error pushing tx", err)
-        return err.message
-      })
-  },
-
-  getBlockchainHeight: function (coin) {
-    const url = getInsightPrefixForCoin(coin) + "sync"
-    return loadJsonUrl(url).then(res => res.blockChainHeight)
-  },
-
-  loadUnspentsStatus: function (coin, allUnspents, height, allSelected) {
-    console.log("[loadUnspentsStatus] coin: " + coin + " height: " + height + " allSelected: " + allSelected + " allUnspents: ", allUnspents)
-    const selectedUnspents = allUnspents.filter(u => allSelected || u.selected)
-    console.log("coin: " + coin + " # allUspents: " + allUnspents.length + " selected: " + selectedUnspents.length)
-    const addrs = []
-    selectedUnspents.forEach(u => {
-      const address = u.aa.address
-      //if (!addrs.find(o => o == address))
-      if (!addrs.includes(address))
-        addrs.push(address)
-    });
-    console.log("# of different selected addrs: " + addrs.length)
-    if (addrs.length === 0)
-      return emptyPromise()
-    return insightQueryTxo(coin, addrs).then(res => {
-      selectedUnspents.forEach(u => {
-        const found = res.some(o => o.txid.toLowerCase() === u.tx.toLowerCase() && o.vout === u.n)
-        if (!u.height && u.confirmations > 0)
-          u.height = height - u.confirmations
-        if (found)
-          if (u.blockExpire >= height)
-            set(u, 'redeemStatus', "timelocked")
-          else
-            set(u, 'redeemStatus', "redeemable")
-        else
-          set(u, 'redeemStatus', "spent")
-        console.log("unspent found: " + found + " for ", u)
-      })
-      return allUnspents
-    })
-  },
-
-  init() {
-    this._super(...arguments)
-    self = this
-  }
-});

@@ -25,14 +25,17 @@
           .field
             label Raw Hex Transaction -- You can push it by yourself with ' bitcoin-cli sendrawtransaction "hexstring" '
             = textarea value=obj.tx
-          ' Push transaction via:
+          /' Push transaction via:
+          ' Broadcast:
 
           .ui.labeled.button click="'pushTx' obj"
-            .ui.basic.button = provider.api
+            //.ui.basic.button = provider.api
+            .ui.basic.button Execute
             a.ui.left.pointing.label = obj.lastMsg
 
           /= each pushProviders as |provider|
-            .ui.labeled.button click="'pushTx' obj provider.code" class="{{if (get (get obj provider.code) 'res') 'disabled'}}"
+            /.ui.labeled.button click="'pushTx' obj provider.code" class="{{if (get (get obj provider.code) 'res') 'disabled'}}"
+            .ui.labeled.button click="'pushTx' obj provider.code" class={pushDisabled:disabled}
               .ui.basic.button = provider.name
               a.ui.left.pointing.label = get (get obj provider.code) 'res'
   = else

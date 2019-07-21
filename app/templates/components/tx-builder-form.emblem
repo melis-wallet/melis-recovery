@@ -1,9 +1,11 @@
 .ui.form
+  h4.ui.dividing.header
+    | Choose destination address (
+    = coin-decoder recoveryInfo.accountInfo.coin
+    ' )
   = if oneBig
-    h4.ui.dividing.header Choose destination address
     | Creating one transaction redeeming all unspents
   = else
-    h4.ui.dividing.header Choose destination addresses
     | One transaction per unspent
 
   table.ui.celled.table

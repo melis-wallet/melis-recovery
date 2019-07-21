@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { next } from '@ember/runloop';
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object'
 
 import CM from 'npm:melis-api-js';
 const C = CM.C
@@ -50,11 +51,11 @@ function signTxs() {
       tx.addOutput(outputSig, inputData.amount - inputData.fees)
       promise = cm.recoveryPrepareMultiSigTx(accountInfo, tx, unspents, seeds, inputData.txData.sigs)
     }
-    promises.push(promise.then(tx => {
-      let hexTx = tx.toHex()
-      console.log('recovered tx: ', hexTx)
-      console.log('recovered tx hash: ', tx.getHash().toString('hex'))
-      return { coin, tx: hexTx, to: inputData.address, amount: inputData.amount, fees: inputData.fees }
+    promises.push(promise.then(nativeTx => {
+      const tx = nativeTx.toHex()
+      console.log('recovered tx: ', tx)
+      console.log('recovered tx hash: ', nativeTx.getHash().toString('hex'))
+      return { coin, tx, to: inputData.address, amount: inputData.amount, fees: inputData.fees, lastMsg:'[result]'}
     }))
   }
   console.log("# of promises created: " + promises.length)
@@ -72,16 +73,24 @@ export default Component.extend({
   signing: false,
   provider: null,
 
+  pushDisabled: computed('signedTxs', 'pushed', function() {
+    const signedTxs = this.get('signedTxs')
+    const pushed = this.get('pushed')
+    console.log("[computed] pushed: "+pushed+" #signedTxs: ", signedTxs.length)
+    return pushed || signedTxs.length == 0
+  }),
+
   init() {
     this._super(...arguments)
     self = this
-    const explorer = self.get('explorer')
-    const recoveryInfo = this.get('recoveryInfo')
-    const provider = {
-      api: explorer.getBaseApi(recoveryInfo.accountInfo.coin),
-      lastMsg: 'Click to push'
-    }
-    this.set('provider', provider)
+    //const explorer = self.get('explorer')
+    //const recoveryInfo = this.get('recoveryInfo')
+    //this.set('provider', {api: explorer.getName(recoveryInfo.coin) })
+    // const provider = {
+    //   api: explorer.getBaseApi(recoveryInfo.accountInfo.coin),
+    //   lastMsg: 'Click to push'
+    // }
+    // this.set('provider', provider)
   },
 
   actions: {
@@ -97,6 +106,7 @@ export default Component.extend({
       console.log("Push tx called with:", obj)
       const explorer = self.get('explorer')
       console.log("Pushing tx: " + obj.tx)
+      this.set('pushed', true)
       explorer.pushTx(obj.coin, obj.tx).then(txid => {
         set(obj, 'lastMsg', 'Result: ' + txid)
       }).catch(err => {

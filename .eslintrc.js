@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
     sourceType: 'module'
   },
   plugins: [
@@ -16,16 +16,20 @@ module.exports = {
   },
   rules: {
     'no-console': 0,
+    'no-unused-vars': 0,
   },
   overrides: [
     // node files
     {
       files: [
-	'ember-cli-build.js',
+        '.eslintrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
-	'lib/*/index.js'
+        'lib/*/index.js',
+        'server/**/*.js'
       ],
       parserOptions: {
         sourceType: 'script',
@@ -34,7 +38,11 @@ module.exports = {
       env: {
         browser: false,
         node: true
-      }
+      },
+      plugins: ['node'],
+      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+      })
     },
 
     // test files

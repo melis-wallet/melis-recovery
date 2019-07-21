@@ -30,26 +30,42 @@ function delay(ms) {
   })
 }
 
-function updateNetworkFees() {
+//let lastFeeProvider = 0
+
+// Non possiamo usare melis per ipotesi, perché potrebbe essere non disponibile
+async function updateNetworkFees() {
   const recoveryInfo = self.get('recoveryInfo')
   const coin = recoveryInfo.accountInfo.coin
   console.log("Updating network fees for coin: " + coin)
-  if (coin !== 'BTC') {
-    set(recoveryInfo, 'satoshisPerByte', 2)
-    set(recoveryInfo, 'feeInfo', { detail: { provider: "hardcoded value" } })
-    return
-  }
-  return recoveryInfo.cm.updateNetworkFeesFromExternalProviders().then(res => {
-    console.log("Network fees: ", res)
-    let fees = res.detail.mediumFee
-    set(recoveryInfo, 'satoshisPerByte', fees)
-    set(recoveryInfo, 'feeInfo', res)
-    return fees
-  }).catch(err => {
-    console.log("Error retrieving fees: ", err)
-    set(recoveryInfo, 'satoshisPerByte', 100)
-    set(recoveryInfo, 'feeInfo', { detail: { provider: "API ERROR -- proposed hardcoded value" } })
-  })
+  const cm = recoveryInfo.cm
+  const names = cm.feeApi.getProviderNames(coin)
+  // console.log("lastFeeProvider: "+lastFeeProvider+" provider names: ", JSON.stringify(names))
+  // console.log("apiUrls: "+cm.apiUrls+" connected: "+cm.connected)
+  // const providerName =names[lastFeeProvider++]
+  // lastFeeProvider = lastFeeProvider % names.length
+  const providerName = 'hardcoded'
+  const res = await cm.feeApi.getFeesByProvider(coin, providerName)()
+  console.log(providerName+" feeInfo: "+JSON.stringify(res))
+  set(recoveryInfo, 'satoshisPerByte', res.mediumFee)
+  set(recoveryInfo, 'feeInfo', res)
+  //set(recoveryInfo, 'feeInfo', JSON.stringify(res))
+
+  // if (coin !== 'BTC') {
+  //   set(recoveryInfo, 'satoshisPerByte', 2)
+  //   set(recoveryInfo, 'feeInfo', { detail: { provider: "hardcoded value" } })
+  //   return
+  // }
+  // return cm.updateNetworkFeesFromExternalProviders().then(res => {
+  //   console.log("Network fees: ", res)
+  //   let fees = res.detail.mediumFee
+  //   set(recoveryInfo, 'satoshisPerByte', fees)
+  //   set(recoveryInfo, 'feeInfo', res)
+  //   return fees
+  // }).catch(err => {
+  //   console.log("Error retrieving fees: ", err)
+  //   set(recoveryInfo, 'satoshisPerByte', 100)
+  //   set(recoveryInfo, 'feeInfo', { detail: { provider: "API ERROR -- proposed hardcoded value" } })
+  // })
 }
 
 function oneBigDisabled(allSelected, unspents) {
@@ -69,94 +85,94 @@ function singleDisabled(allSelected, unspents) {
   return !singleEnabled(allSelected, unspents)
 }
 
-function loadUnspentsStatus_OLD(unspents, height, bcApi, allSelected) {
-  let loadUnspent = (unspents, index) => {
-    let u = unspents[index]
-    let promise
+// function loadUnspentsStatus_OLD(unspents, height, bcApi, allSelected) {
+//   let loadUnspent = (unspents, index) => {
+//     let u = unspents[index]
+//     let promise
 
-    if (!allSelected && !u.selected) {
-      //console.log("Skipping unspent #" + index, u)
-      //Ember.set(u, 'redeemStatus', "unknown")
-      promise = emptyPromise()
-    } else {
-      console.log("Loading unspent #" + index, u)
-      set(u, 'redeemStatus', 'loading')
-      let apiCall = bcApi.getTxOutputs([{ tx: u.tx, n: u.n }]).then(res => {
-        let out = res[0]
-        if (!out) {
-          console.log("Empty result for " + u.tx + "/" + u.n)
-          set(u, 'redeemStatus', "error")
-          return;
-        }
-        console.log("Unspent for " + u.tx + "/" + u.n, out)
-        if (out.spent)
-          set(u, 'redeemStatus', "spent")
-        else if (u.blockExpire >= height)
-          set(u, 'redeemStatus', "timelocked")
-        else
-          set(u, 'redeemStatus', "redeemable")
-      }).catch(err => {
-        console.log("API ERR: ", err)
-        set(u, 'redeemStatus', "error")
-      })
-      promise = delay(800).then(apiCall)
-    }
+//     if (!allSelected && !u.selected) {
+//       //console.log("Skipping unspent #" + index, u)
+//       //Ember.set(u, 'redeemStatus', "unknown")
+//       promise = emptyPromise()
+//     } else {
+//       console.log("Loading unspent #" + index, u)
+//       set(u, 'redeemStatus', 'loading')
+//       let apiCall = bcApi.getTxOutputs([{ tx: u.tx, n: u.n }]).then(res => {
+//         let out = res[0]
+//         if (!out) {
+//           console.log("Empty result for " + u.tx + "/" + u.n)
+//           set(u, 'redeemStatus', "error")
+//           return;
+//         }
+//         console.log("Unspent for " + u.tx + "/" + u.n, out)
+//         if (out.spent)
+//           set(u, 'redeemStatus', "spent")
+//         else if (u.blockExpire >= height)
+//           set(u, 'redeemStatus', "timelocked")
+//         else
+//           set(u, 'redeemStatus', "redeemable")
+//       }).catch(err => {
+//         console.log("API ERR: ", err)
+//         set(u, 'redeemStatus', "error")
+//       })
+//       promise = delay(800).then(apiCall)
+//     }
 
-    return promise.then(() => {
-      if (index >= unspents.length - 1)
-        return emptyPromise()
-      else {
-        return loadUnspent(unspents, index + 1)
-      }
-    })
-  }
+//     return promise.then(() => {
+//       if (index >= unspents.length - 1)
+//         return emptyPromise()
+//       else {
+//         return loadUnspent(unspents, index + 1)
+//       }
+//     })
+//   }
 
-  if (unspents && unspents.length)
-    return loadUnspent(unspents, 0)
-  else
-    return emptyPromise()
-}
+//   if (unspents && unspents.length)
+//     return loadUnspent(unspents, 0)
+//   else
+//     return emptyPromise()
+// }
 
-function setUnspentStatus_OLD(provider) {
-  let recoveryInfo = this.get('recoveryInfo')
-  let allSelected = this.get('allSelected')
-  let unspents = this.get('unspents')
-  let extApis = new CM.BC_APIS().getProvider(provider, recoveryInfo.isTestnet).api
-  return extApis.getBlockChainStatus().then(res => {
-    console.log('blockchain height: ', res)
-    let height = res.height
-    self.set('blockChainHeight', height)
-    return loadUnspentsStatus(unspents, height, extApis, allSelected)
-  }).then(() => {
-    this.set('loading', false)
-  })
-}
+// function setUnspentStatus_OLD(provider) {
+//   let recoveryInfo = this.get('recoveryInfo')
+//   let allSelected = this.get('allSelected')
+//   let unspents = this.get('unspents')
+//   let extApis = new CM.BC_APIS().getProvider(provider, recoveryInfo.isTestnet).api
+//   return extApis.getBlockChainStatus().then(res => {
+//     console.log('blockchain height: ', res)
+//     let height = res.height
+//     self.set('blockChainHeight', height)
+//     return loadUnspentsStatus_OLD(unspents, height, extApis, allSelected)
+//   }).then(() => {
+//     this.set('loading', false)
+//   })
+// }
 
-function updateBlockchainHeight_OLD1(apiName) {
-  let recoveryInfo = self.get('recoveryInfo')
-  let extApis = new CM.BC_APIS().getProvider(apiName, recoveryInfo.isTestnet).api
-  return extApis.getBlockChainStatus().then(res => {
-    console.log('blockchain height: ', res)
-    self.set('blockChainHeight', res.height)
-    return res.height
-  })
-}
+// function updateBlockchainHeight_OLD1(apiName) {
+//   let recoveryInfo = self.get('recoveryInfo')
+//   let extApis = new CM.BC_APIS().getProvider(apiName, recoveryInfo.isTestnet).api
+//   return extApis.getBlockChainStatus().then(res => {
+//     console.log('blockchain height: ', res)
+//     self.set('blockChainHeight', res.height)
+//     return res.height
+//   })
+// }
 
-function updateBlockchainHeight_OLD2(apiName) {
-  let recoveryInfo = self.get('recoveryInfo')
-  const explorer = self.get('explorer')
-  return explorer.getBlockchainHeight(recoveryInfo.coin).then(height => {
-    console.log('blockchain height: ', height)
-    self.set('blockChainHeight', height)
-    return height
-  })
-}
+// function updateBlockchainHeight_OLD2(apiName) {
+//   let recoveryInfo = self.get('recoveryInfo')
+//   const explorer = self.get('explorer')
+//   return explorer.getBlockchainHeight(recoveryInfo.coin).then(height => {
+//     console.log('blockchain height: ', height)
+//     self.set('blockChainHeight', height)
+//     return height
+//   })
+// }
 
 function updateBlockchainHeight() {
   const recoveryInfo = self.get('recoveryInfo')
   const coin = recoveryInfo.accountInfo.coin
   const explorer = self.get('explorer')
-  console.log("Updating blockchain height for coin: " + coin)
+  console.log("Checking blockchain height for coin: " + coin)
   return explorer.getBlockchainHeight(coin).then(height => {
     console.log('blockchain height: ', height)
     self.set('blockChainHeight', height)
@@ -171,7 +187,7 @@ function setUnspentStatus() {
   const explorer = self.get('explorer')
   const coin = recoveryInfo.accountInfo.coin
   return explorer.getBlockchainHeight(coin).then(height => {
-    console.log('[setUnspentStatus] blockchain height: ', height)
+    console.log('[setUnspentStatus] height: ', height)
     self.set('blockChainHeight', height)
     return explorer.loadUnspentsStatus(coin, unspents, height, allSelected)
   }).then(() => {
@@ -185,7 +201,7 @@ export default Component.extend({
   unspents: null,
   allSelected: null,
   //apiProviders: testnetProviders,
-  apiProviderName: 'default',
+  apiProviderName: 'none',
   explorer: service(),
 
   init() {
@@ -207,8 +223,9 @@ export default Component.extend({
       allSelected: false
     })
     const explorer = self.get('explorer')
-    this.set('apiProviderName', explorer.getBaseApi(coin))
-    console.log('coin: ' + coin + " api: " + explorer.getBaseApi(coin))
+    //this.set('apiProviderName', explorer.getBaseApi(coin))
+    this.set('apiProviderName', 'blockchair')
+    console.log('coin: ' + coin)
     updateBlockchainHeight()
     updateNetworkFees()
   },
@@ -262,6 +279,9 @@ export default Component.extend({
       next(this, setUnspentStatus) //, apiName)
     },
 
+    explorerClicked: () => {
+      console.log("TODO: goto explorer")
+    }, 
     updateNetworkFees: () => updateNetworkFees(),
 
     //updateBlockchainHeight: () => updateBlockchainHeight(self.get('apiProviderName'))

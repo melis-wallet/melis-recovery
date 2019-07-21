@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { observer } from '@ember/object';
 import { computed } from '@ember/object';
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -27,13 +28,14 @@ export default Component.extend({
   unspentsSelector: null,
 
   fileError: null,
+  explorerError: false,
 
   init() {
     this._super(...arguments)
     self = this
   },
 
-  fileChanged: (function () {
+  fileChanged: observer ('filename', async function() {
     const explorer = self.get('explorer')
     this.set('fileValidated', false)
     let filename = this.get('filename')
@@ -54,7 +56,7 @@ export default Component.extend({
       input += e.target.result
     }
 
-    reader.onloadend = () => {
+    reader.onloadend = async function() {
       //console.log('loaded:', input)
       try {
         const recoveryInfo = JSON.parse(input)
@@ -65,19 +67,24 @@ export default Component.extend({
         const coin = accountInfo.coin
         const isTestnet = coin.startsWith('T') && accountInfo.coin.length === 4
         recoveryInfo.cm = new CM({ useTestPaths: isTestnet })
-        this.set('recoveryInfo', recoveryInfo)
+        self.set('recoveryInfo', recoveryInfo)
         if (!explorer.isCoinSupported(coin))
           throw new Error("Recovery file is for coin " + coin + " which is unsupported")
-        this.set('fileValidated', true)
+        self.set('fileValidated', true)
         console.log(recoveryInfo)
+
+        const height = await explorer.getBlockchainHeight(coin)
+        console.log("Explorer test -- height: "+height)
+        self.set('explorerError', !(height && height > 0))
+
       } catch (e) {
         console.log("Exception reading input: ", e)
-        this.set('fileError', e.message)
+        self.set('fileError', e.message)
       }
     }
 
     reader.readAsText(file)
-  }).observes('filename'),
+  }),
 
   step1Disabled: computed('fileValidated', function () {
     return !this.get('fileValidated')

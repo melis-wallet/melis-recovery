@@ -1,13 +1,22 @@
 //h4.ui.dividing.header
 .ui.segment
   .ui.brown.right.ribbon.label Blockchain API access
-  ' Api provider:
-  = ui-dropdown class="selection" selected="Bob" onChange=(action (mut apiProviderName))
-    .default.text default
-    i.dropdown.icon
-    .menu
-      = each apiProviders as |api|
-        .item data-value=api.code = api.name
+
+  .ui.labeled.button
+    .ui.basic.yellow.button Chain
+    a.ui.green.left.pointing.label = coin-decoder recoveryInfo.accountInfo.coin
+
+  .ui.labeled.button 
+    .ui.basic.yellow.button Explorer
+    a.ui.green.left.pointing.label target='_blank' href='https://blockchair.com' blockchair.com
+  /
+    ' Api provider:
+    = ui-dropdown class="selection" selected="Bob" onChange=(action (mut apiProviderName))
+      .default.text default
+      i.dropdown.icon
+      .menu
+        = each apiProviders as |api|
+          .item data-value=api.code = api.name
 
   '
   .ui.labeled.button click="updateBlockchainHeight"
